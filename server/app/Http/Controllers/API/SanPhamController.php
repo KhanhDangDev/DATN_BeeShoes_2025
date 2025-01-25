@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\SanPham;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -15,19 +16,31 @@ class SanPhamController extends Controller
      */
     public function index(Request $request)
     {
-        $sanPham = QueryBuilder::for(SanPham::class)
-            ->allowedFilters([
-                AllowedFilter::exact('ma_san_pham'),
-                AllowedFilter::exact('id_mau_sac'),
-                AllowedFilter::exact('id_thuong_hieu'),
-                AllowedFilter::partial('ten_san_pham'),
-                AllowedFilter::scope('don_gia_min'),
-                AllowedFilter::scope('don_gia_max'),
-            ])
-            ->allowedSorts('don_gia', 'ten_san_pham')
-            ->paginate(10);
+        try {
 
-        return response()->json($sanPham);
+            $sanPham = QueryBuilder::for(SanPham::class)
+                ->allowedFilters([
+                    AllowedFilter::exact('ma_san_pham'),
+                    AllowedFilter::exact('id_mau_sac'),
+                    AllowedFilter::exact('id_thuong_hieu'),
+                    AllowedFilter::partial('ten_san_pham'),
+                    AllowedFilter::scope('don_gia_min'),
+                    AllowedFilter::scope('don_gia_max'),
+                ])
+                ->allowedSorts('don_gia', 'ten_san_pham')
+                ->paginate($request->input('page', 10));
+
+            return response()->json([
+                'message' => 'Danh sách sản phẩm',
+                'data' => $sanPham
+            ],Response::HTTP_OK);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Lỗi thử lại',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**
