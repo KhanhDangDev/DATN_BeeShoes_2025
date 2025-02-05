@@ -35,10 +35,12 @@ class ApiResponse
         return response()->json($response, 200);
     }
 
-    public static function responsePage($data, $page)
+    public static function responsePage($page)
     {
         $response = [
-            'data' => $data,
+            'success' => true,
+            'status' => 'success',
+            'data' => $page->item(),
             'page' => [
                 'currentPage' => $page->currentPage(),
                 'lastPage' => $page->lastPage(),
