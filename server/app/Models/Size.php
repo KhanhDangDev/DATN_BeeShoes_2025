@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Size extends Model
 {
 
+    use HasUuids;
     // bỏ tự động tăng của id.
     public $incrementing = false;
 

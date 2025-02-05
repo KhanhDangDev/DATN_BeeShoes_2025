@@ -8,6 +8,7 @@ use App\Helpers\ProductCodeHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\AttributeRequestBody;
 use App\Http\Requests\Product\ProductRequestBody;
+use App\Http\Requests\Product\SizeRequestBody;
 use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // sử dụng DB Facades để thực hiện sql
@@ -88,9 +89,18 @@ class ProductController extends Controller
         return ApiResponse::responseObject($sanPhamMoi);
     }
 
-    public function storeKichCo(AttributeRequestBody $request)
+    public function storeKichCo(SizeRequestBody $request)
     {
+
         foreach ($request->listKichCo as $kichCo) {
+            $kichCoTonTai = Size::where('ten_kich_co', '=', $kichCo)
+                ->where('id_san_pham', '=', $request->id)
+                ->first();
+
+            if ($kichCoTonTai) {
+                throw new RestApiException('Tên kích cỡ đã tồn tại ' .  $kichCo . ' đã tồn tại trong sản phẩm này');
+            }
+
             if (is_string($kichCo) && !empty($kichCo)) { // Kiểm tra nếu là chuỗi và không rỗng.
                 $kichCoMoi = new Size();
                 $kichCoMoi->ten_kich_co = $kichCo;
@@ -153,7 +163,6 @@ class ProductController extends Controller
             }
         }
 
-
         $timSanPham->ma_san_pham = $request->maSanPham;
         $timSanPham->ten_san_pham = $request->tenSanPham;
         $timSanPham->mo_ta = $request->moTa;
@@ -169,7 +178,7 @@ class ProductController extends Controller
         return ApiResponse::responseObject($timSanPham);
     }
 
-    public function updateSoluongKichCo(Request $request)
+    public function updateSoluongKichCo(SizeRequestBody $request)
     {
         $timKichCo = Size::find($request->id);
 
@@ -184,7 +193,7 @@ class ProductController extends Controller
         }
 
         // Lấy danh sách các kích cỡ của sản phẩm dựa trên ID sản phẩm từ yêu cầu
-        $listKichCoCuaSanPham = Size::where('id_san_pham', '=', $request->id)->orderBy('ten_kich_co', 'asc')->get();
+        $listKichCoCuaSanPham = Size::where('id_san_pham', '=', $request->id_san_pham)->orderBy('ten_kich_co', 'asc')->get();
 
         return ApiResponse::responseObject($listKichCoCuaSanPham);
     }

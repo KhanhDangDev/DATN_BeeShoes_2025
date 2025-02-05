@@ -7,5 +7,5 @@ use RuntimeException;
 
 class RestApiException extends RuntimeException
 {
-    //
+    // extend constructor và các method, attribute 
 }

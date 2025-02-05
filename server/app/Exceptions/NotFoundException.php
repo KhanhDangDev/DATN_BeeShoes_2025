@@ -7,5 +7,5 @@ use RuntimeException;
 
 class NotFoundException extends RuntimeException
 {
-    //
+    // extend constructor và các method, attribute 
 }
