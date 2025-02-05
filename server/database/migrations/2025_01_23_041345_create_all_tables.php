@@ -87,23 +87,12 @@ return new class extends Migration
         //     $table->dropForeign(['id_chat_lieu']);  // Xóa khóa ngoại 'id_chat_lieu'
         // });
 
-        // Schema::dropIfExists('san_pham');
-        // Schema::dropIfExists('kich_co');
-
-        // // Sau khi các bảng con đã được xóa, bạn có thể xóa các bảng chính
-        // Schema::dropIfExists('mau_sac');
-        // Schema::dropIfExists('thuong_hieu');
-        // Schema::dropIfExists('chat_lieu');
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');  // Tạm thời vô hiệu hóa kiểm tra khóa ngoại
-
-        // Xóa các bảng
-        Schema::dropIfExists('san_pham');
         Schema::dropIfExists('kich_co');
+        Schema::dropIfExists('san_pham');
+
+        // Sau khi các bảng con đã được xóa, bạn có thể xóa các bảng chính
         Schema::dropIfExists('mau_sac');
         Schema::dropIfExists('thuong_hieu');
         Schema::dropIfExists('chat_lieu');
-
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
     }
 };
