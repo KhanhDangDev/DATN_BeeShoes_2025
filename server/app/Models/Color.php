@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Color extends Model
 {
 
+    use HasUuids;
     // bỏ tính năng tự động tăng của id.
     public $incrementing = false;
 
