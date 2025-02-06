@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\ColorController;
+use App\Http\Controllers\Api\MaterialController;
+use App\Http\Controllers\Api\SizeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 //////// admin.
@@ -12,3 +16,13 @@ Route::get('/tim-san-pham/{id}', [ProductController::class, 'show']);
 Route::put('/update-san-pham', [ProductController::class, 'update']);
 Route::put('/update-so-luong-kich-co', [ProductController::class, 'updateSoluongKichCo']);
 Route::delete('/danh-sach-san-pham/{id}', [ProductController::class, 'destroy']);
+
+// Màu sắc
+Route::apiResource('mau-sac', ColorController::class);
+//kich co
+ Route::apiResource('kich-co', SizeController::class);
+//Thuong hieu
+Route::apiResource('thuong-hieu', BrandController::class);
+//Chat lieu 
+Route::apiResource('chat-lieu', MaterialController::class);
+
