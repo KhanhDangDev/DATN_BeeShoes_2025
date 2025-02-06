@@ -24,7 +24,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('ma_mau_sac', SystemConstant::CODE_MAX_LENGTH)->unique();
             $table->string('ten_mau_sac', SystemConstant::DEFAULT_MAX_LENGTH);
-            $table->date('ngay_tao')->nullable();
             $table->enum('trang_thai', CommonStatus::CommonStatusArray())->default(CommonStatus::DANG_HOAT_DONG);
             $table->timestamps();
         });
@@ -34,7 +33,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('ma_thuong_hieu', SystemConstant::CODE_MAX_LENGTH)->unique();
             $table->string('ten_thuong_hieu', SystemConstant::DEFAULT_MAX_LENGTH);
-            $table->date('ngay_tao')->nullable();
             $table->enum('trang_thai', CommonStatus::CommonStatusArray())->default(CommonStatus::DANG_HOAT_DONG);
             $table->timestamps();
         });
@@ -45,7 +43,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('ma_chat_lieu', SystemConstant::CODE_MAX_LENGTH)->unique();
             $table->string('ten_chat_lieu', SystemConstant::DEFAULT_MAX_LENGTH);
-            $table->date('ngay_tao')->nullable();
             $table->enum('trang_thai', CommonStatus::CommonStatusArray())->default(CommonStatus::DANG_HOAT_DONG);
             $table->timestamps();
         });
@@ -56,7 +53,6 @@ return new class extends Migration
             $table->string('ma_san_pham', SystemConstant::CODE_MAX_LENGTH)->unique(); //
             $table->string('ten_san_pham', SystemConstant::DEFAULT_MAX_LENGTH);
             $table->text('mo_ta')->nullable();
-            $table->date('ngay_tao')->nullable();
             $table->decimal('don_gia', 15, 2)->default(0); // mặc định là 0.
             $table->enum('trang_thai', ProductStatus::ProductStatusArray())->default(ProductStatus::DANG_KINH_DOANH);
             $table->foreignUuid('id_mau_sac')->references('id')->on('mau_sac')->onDelete('cascade');
