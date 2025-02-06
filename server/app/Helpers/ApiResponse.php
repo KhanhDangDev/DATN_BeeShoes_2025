@@ -4,35 +4,26 @@ namespace App\Helpers;
 
 class ApiResponse
 {
-    public static function responseError($code = 500, $message = '', $error = '')
+    public static function responseError($code = 500, $errorMessage = '', $message = '')
     {
         $response = [
             'status' => $code,
-            'error' => $error,
             'message' => $message,
+            'error_message' => $errorMessage,
         ];
 
         return response()->json($response, $code);
     }
 
-    public static function responseObject($data)
+    public static function responseObject($data, $statusCode = 200, $message = 'success')
     {
-
-        // if ($data === null || empty($data)) {
-        //     // Nếu không có dữ liệu, trả về thông báo lỗi
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'No data found'
-        //     ], 404);  // Sử dụng mã trạng thái 404 nếu không tìm thấy dữ liệu
-        // }
-
         $response = [
-            'success' => true,
-            'status' => 'success',
+            'code' => $statusCode,
+            'message' => $message,
             'data' => $data
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, $statusCode);
     }
 
     public static function responsePage($page)
