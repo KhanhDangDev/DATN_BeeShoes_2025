@@ -31,7 +31,7 @@ class ApiResponse
         $response = [
             'success' => true,
             'status' => 'success',
-            'data' => $page->item(),
+            'data' => $page->items(),
             'page' => [
                 'currentPage' => $page->currentPage(),
                 'lastPage' => $page->lastPage(),

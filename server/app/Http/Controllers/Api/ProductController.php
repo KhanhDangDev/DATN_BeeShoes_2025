@@ -24,8 +24,6 @@ class ProductController extends Controller
     {
         $listSanPham = Product::query();
 
-
-
         // Tìm kiếm theo từ khóa
         if ($request->filled('tuKhoa')) {
             $tuKhoa = '%' . $request->tuKhoa . '%';
@@ -42,9 +40,36 @@ class ProductController extends Controller
         // Sắp xếp sản phẩm mới nhất
         $listSanPham->orderBy('ngay_tao', 'desc');
 
+        $listSanPham->where(function($q) use ($request){
+            // Loc theo don donGia
+            if($request->has('don_gia_min') && $request->has('don_gia_max')) {
+                $q->whereBetween('don_gia', [$request->don_gia_min, $request->don_gia_max]);
+            }elseif($request->has('don_gia_min')) {
+                $q->where('don_gia', '>=', $request->don_gia_min);
+            }elseif($request->has('don_gia_max')) {
+                $q->where('don_gia', '<=', $request->don_gia_max);
+            }
+
+            //Loc theo id mau sac 
+            if($request->has('idMauSac') && $request->idMauSac){
+                $q->where('id_mau_sac', $request->idMauSac);
+            }
+            //Loc theo id thuong hieu
+            if($request->has('idThuongHieu') && $request->idThuongHieu){
+                $q->where('id_thuong_hieu', $request->idThuongHieu);
+            }
+            // LOc theo id chat lieu
+            if($request->has('idChatLieu') && $request->idChatLieu){
+                $q->where('id_chat_lieu', $request->idChatLieu);
+            }
+            //Loc theo id kich co
+            if($request->has('idKichCo') && $request->idKichCo){
+                $q->where('id_kich_co', $request->idKichCo);
+            }
+        });
         // Phân trang.
         $responsePagePaginate = $listSanPham->paginate(10, ['*']); // ['*']: để lấy tất cả các cột trong csdl.
-
+    
         return ApiResponse::responsePage(ProductResource::collection($responsePagePaginate), $responsePagePaginate);
     }
 

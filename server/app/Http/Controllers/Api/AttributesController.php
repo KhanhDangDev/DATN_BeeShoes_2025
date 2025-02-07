@@ -7,23 +7,27 @@ use App\Exceptions\RestApiException;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Color;
+use App\Models\Material;
+use App\Traits\ApiDataTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AttributesController extends Controller
 {
+    use ApiDataTrait;
     // index
     public function indexBrand(Request $request)
     {
-        return ApiResponse::responseObject(
-            "Hello"
-        );
+       return $this->getAllData(new Brand());
     }
     public function indexColor(Request $request)
     {
+        return $this->getAllData(new Color());
     }
     public function indexMaterial(Request $request)
     {
+        return $this->getAllData(new Material());
     }
 
     public function createModelInstance($tableName)
@@ -200,12 +204,15 @@ class AttributesController extends Controller
     // show
     public function showBrand(Request $request)
     {
+        return $this->getDataById(new Brand(), $request->id);
     }
     public function showColor(Request $request)
     {
+        return $this->getDataById(new Color(), $request->id);
     }
     public function showMaterial(Request $request)
     {
+        return $this->getDataById(new Material(), $request->id);
     }
 
     // destroy
@@ -217,5 +224,32 @@ class AttributesController extends Controller
     }
     public function destroyMaterial(Request $request)
     {
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $table = $request->input('table');
+        $id = $request->input('id');
+        $status = $request->input('trang_thai');
+
+        if (!$table || !$id || !$status) {
+            return response()->json([
+                'message' => 'Dữ liệu không hợp lệ',
+            ], 400);
+        }
+
+        $models = [
+            'thuong_hieu' => Brand::class,
+            'mau_sac' => Color::class,
+            'chat_lieu' => Material::class
+        ];
+
+        if (!isset($models[$table])) {
+            return response()->json([
+                'message' => 'Bảng không hợp lệ',
+            ], 400);
+        }
+
+        return $this->processUpdateStatus($models[$table], $id, $status);
     }
 }
