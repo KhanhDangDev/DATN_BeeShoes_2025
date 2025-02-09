@@ -24,7 +24,7 @@ class SizeRequestBody extends FormRequest
     {
 
         return [
-            'id_san_pham' => 'required|string',
+            'id' => 'required|string',
             'listKichCo' => 'required|array',  // Kiểm tra xem 'listKichCo' có phải là mảng không.
             'listKichCo.*' => 'required|string|distinct',  // Kiểm tra từng phần tử trong mảng phải là chuỗi và không trùng lặp
         ];
@@ -33,7 +33,7 @@ class SizeRequestBody extends FormRequest
     public function messages()
     {
         return [
-            'id_san_pham.required' => 'Id sản phẩm là bắt buộc.',
+            'id.required' => 'Id sản phẩm là bắt buộc.',
 
             'listKichCo.required' => 'Danh sách kích cỡ là bắt buộc.',
             'listKichCo.array' => 'Danh sách kích cỡ phải là một mảng.',

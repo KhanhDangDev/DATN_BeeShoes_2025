@@ -19,13 +19,9 @@ class ProductResource extends JsonResource
             'maSanPham' => $this->ma_san_pham,
             'tenSanPham' => $this->ten_san_pham,
             'moTa' => $this->mo_ta,
-            'ngayTao' => $this->ngay_tao,
             'donGia' => $this->don_gia,
             'trangThai' => $this->trang_thai,
-            'idMauSac' => $this->id_mau_sac,
-            'idChatLieu' => $this->id_chat_lieu,
-            'idThuongHieu' => $this->id_thuong_hieu,
-            'listKichCo' => $this->listKichCo
+            'tenThuongHieu' => $this->ten_thuong_hieu,
         ];
     }
 }
