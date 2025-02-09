@@ -17,6 +17,7 @@ trait ApiDataTrait
             $query = $model::with($relations);
     
             foreach ($filters as $field => $value) {
+<<<<<<< HEAD
                 if (!empty($value)) {
         
                     $column = \Str::snake($field);
@@ -30,6 +31,13 @@ trait ApiDataTrait
                         } else {
                             $query->where($column, $value);
                         }
+=======
+                if (!empty($value) && in_array($field, $filterableFields)) {
+                    if (\Str::startsWith($field, 'ten_')) {
+                        $query->where($field, 'like', "%$value%");
+                    } else {
+                        $query->where($field, $value);
+>>>>>>> develop
                     }
                 }
             }
@@ -58,8 +66,12 @@ trait ApiDataTrait
                 ], Response::HTTP_NOT_FOUND);
             }
     
+<<<<<<< HEAD
             return ApiResponse::responsePage($data);
 
+=======
+            return ApiResponse::responseObject($data, Response::HTTP_OK, $message);
+>>>>>>> develop
         } catch (\Exception $e) {
             return ApiResponse::responseError(500, $e->getMessage(), $message);
         }
@@ -94,7 +106,11 @@ trait ApiDataTrait
                 return response()->json([
                     'message' => 'Không tìm thấy dữ liệu',
                 ], Response::HTTP_NOT_FOUND);
+<<<<<<< HEAD
 }
+=======
+            }
+>>>>>>> develop
 
             if (!in_array($status, ["dang_hoat_dong", "ngung_hoat_dong"])) {
                 return response()->json([
@@ -112,4 +128,8 @@ trait ApiDataTrait
             return ApiResponse::responseError(500, $e->getMessage());
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> develop
