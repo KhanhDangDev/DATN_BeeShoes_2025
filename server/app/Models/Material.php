@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Material extends Model
 {
 
+    use HasUuids;
     // bỏ tự động tăng của khóa chính.
     public $incrementing = false;
 

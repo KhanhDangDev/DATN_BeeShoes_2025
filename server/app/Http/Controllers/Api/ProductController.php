@@ -37,40 +37,31 @@ class ProductController extends Controller
             $listSanPham->where('trang_thai', '=', $request->trangThai);
         }
 
-        // Sắp xếp sản phẩm mới nhất
-        $listSanPham->orderBy('ngay_tao', 'desc');
+        $listSanPham = DB::table('san_pham')
+            ->join('thuong_hieu', 'san_pham.id_thuong_hieu', '=', 'thuong_hieu.id')
+            ->select('san_pham.id', 'san_pham.ma_san_pham', 'san_pham.ten_san_pham', 'san_pham.mo_ta', 'san_pham.don_gia', 'san_pham.trang_thai', 'thuong_hieu.ten_thuong_hieu')
+            ->orderBy('san_pham.ngay_tao', 'desc');
 
-        $listSanPham->where(function($q) use ($request){
+
+        $listSanPham->where(function ($q) use ($request) {
             // Loc theo don donGia
-            if($request->has('don_gia_min') && $request->has('don_gia_max')) {
+            if ($request->has('don_gia_min') && $request->has('don_gia_max')) {
                 $q->whereBetween('don_gia', [$request->don_gia_min, $request->don_gia_max]);
-            }elseif($request->has('don_gia_min')) {
+            } elseif ($request->has('don_gia_min')) {
                 $q->where('don_gia', '>=', $request->don_gia_min);
-            }elseif($request->has('don_gia_max')) {
+            } elseif ($request->has('don_gia_max')) {
                 $q->where('don_gia', '<=', $request->don_gia_max);
             }
 
-            //Loc theo id mau sac 
-            if($request->has('idMauSac') && $request->idMauSac){
-                $q->where('id_mau_sac', $request->idMauSac);
-            }
             //Loc theo id thuong hieu
-            if($request->has('idThuongHieu') && $request->idThuongHieu){
+            if ($request->has('idThuongHieu') && $request->idThuongHieu) {
                 $q->where('id_thuong_hieu', $request->idThuongHieu);
-            }
-            // LOc theo id chat lieu
-            if($request->has('idChatLieu') && $request->idChatLieu){
-                $q->where('id_chat_lieu', $request->idChatLieu);
-            }
-            //Loc theo id kich co
-            if($request->has('idKichCo') && $request->idKichCo){
-                $q->where('id_kich_co', $request->idKichCo);
             }
         });
         // Phân trang.
         $responsePagePaginate = $listSanPham->paginate(10, ['*']); // ['*']: để lấy tất cả các cột trong csdl.
-    
-        return ApiResponse::responsePage(ProductResource::collection($responsePagePaginate), $responsePagePaginate);
+
+        return ApiResponse::responsePage(ProductResource::collection($responsePagePaginate));
     }
 
     /**
@@ -118,6 +109,7 @@ class ProductController extends Controller
     {
 
         foreach ($request->listKichCo as $kichCo) {
+            // Mỗi $kichCo đại diện cho một phần tử trong danh sách kích cỡ ($request->listKichCo).
             $kichCoTonTai = Size::where('ten_kich_co', '=', $kichCo)
                 ->where('id_san_pham', '=', $request->id)
                 ->first();
@@ -203,8 +195,23 @@ class ProductController extends Controller
         return ApiResponse::responseObject($timSanPham);
     }
 
+    public function updateTrangThaiSanPham(ProductRequestBody $request)
+    {
+        $timSanPham = Product::find($request->id);
+
+        if ($timSanPham) {
+            $timSanPham->trang_thai = $request->trangThai;
+            $timSanPham->save();
+        }
+
+        $listCuaSanPham = Product::where('id', $request->id)->get();
+
+        return ApiResponse::responseObject($listCuaSanPham);
+    }
+
     public function updateSoluongKichCo(SizeRequestBody $request)
     {
+        // tìm id kích cỡ.
         $timKichCo = Size::find($request->id);
 
         if (!$timKichCo) {
@@ -226,15 +233,4 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $timSanPham = Product::find($id);
-
-        if (!$timSanPham) {
-            throw new RestApiException('Không tìm thấy sản phẩm có id là ' . $id);
-        }
-
-        $timSanPham->delete();
-        return ApiResponse::responseSuccess('Sản phẩm đã được xóa thành công là ' . $id);
-    }
 }
