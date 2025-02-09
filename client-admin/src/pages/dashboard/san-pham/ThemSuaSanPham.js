@@ -74,11 +74,11 @@ export default function ThemSuaSanPham() {
           </Container>
         }
 
-        {id &&
+        {/* {id &&
           <Container className='mt-20' style={{ minHeight: 150 }}>
             <FormThemSuaAnh danhSachHinhAnhHienTai={data?.listHinhAnh || []} id={id} />
           </Container>
-        }
+        } */}
 
       </Page>
     </>

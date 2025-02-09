@@ -45,7 +45,7 @@ class ProductController extends Controller
         // Phân trang.
         $responsePagePaginate = $listSanPham->paginate(10, ['*']); // ['*']: để lấy tất cả các cột trong csdl.
 
-        return ApiResponse::responsePage(ProductResource::collection($responsePagePaginate), $responsePagePaginate);
+        return ApiResponse::responsePage(ProductResource::collection($responsePagePaginate));
     }
 
     /**
@@ -93,6 +93,7 @@ class ProductController extends Controller
     {
 
         foreach ($request->listKichCo as $kichCo) {
+            // Mỗi $kichCo đại diện cho một phần tử trong danh sách kích cỡ ($request->listKichCo).
             $kichCoTonTai = Size::where('ten_kich_co', '=', $kichCo)
                 ->where('id_san_pham', '=', $request->id)
                 ->first();
@@ -180,6 +181,7 @@ class ProductController extends Controller
 
     public function updateSoluongKichCo(SizeRequestBody $request)
     {
+        // tìm id kích cỡ.
         $timKichCo = Size::find($request->id);
 
         if (!$timKichCo) {
