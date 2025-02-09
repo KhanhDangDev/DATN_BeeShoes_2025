@@ -9,25 +9,53 @@ use Illuminate\Database\Eloquent\Collection;
 
 trait ApiDataTrait
 {
-    public function getAllData(Model $model, $message = "Danh sách ", $relations = [])
+    public function getAllData(Model $model, $message = "Danh sách ", $relations = [], array $filterableFields = [], array $dates = [])
     {
         try {
+            $filters = request()->query();
+    
+            $query = $model::with($relations);
+    
+            foreach ($filters as $field => $value) {
+                if (!empty($value) && in_array($field, $filterableFields)) {
+                    if (\Str::startsWith($field, 'ten_')) {
+                        $query->where($field, 'like', "%$value%");
+                    } else {
+                        $query->where($field, $value);
+                    }
+                }
+            }
+            foreach($dates as $date){
+                if(isset($filters['start_date']) && isset($filters['end_date'])){
 
-            $data = $model::with($relations)->get();
+                    $query->whereBetween($date, [$filters['start_date'], $filters['end_date']]);
 
+                }elseif(isset($filters['from_date'])){
+
+                    $query->where($date, '>=', $filters['from_date']);
+
+                }elseif(isset($filters['to_date'])){
+                    
+                    $query->where($date, '<=', $filters['to_date']);
+                }
+            }
+    
+            $perPage = request()->query('per_page', 10);
+            $data = $query->paginate($perPage);
+    
             if ($data->isEmpty()) {
-
                 return response()->json([
-                    'message' => 'Khong tim thay du lieu',
+                    'message' => 'Không tìm thấy dữ liệu',
                     'data' => []
                 ], Response::HTTP_NOT_FOUND);
             }
-
+    
             return ApiResponse::responseObject($data, Response::HTTP_OK, $message);
         } catch (\Exception $e) {
             return ApiResponse::responseError(500, $e->getMessage(), $message);
         }
     }
+    
 
     public function getDataById(Model $model, $id, $relations = [], $message = "Sản phẩm")
     {
