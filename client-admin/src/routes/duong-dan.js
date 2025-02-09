@@ -24,11 +24,14 @@ export const DUONG_DAN_TRANG = {
     danh_sach: '/san-pham/danh-sach',
     cap_nhat: (id) => `/san-pham/${id}`,
     mau_sac: '/mau-sac/danh-sach',
+    chat_lieu: '/chat-lieu/danh-sach',
+    tao_moi_chat_lieu: '/chat-lieu/tao-moi',
+    cap_nhat_chat_lieu: (id) => `/chat-lieu/${id}`,
     tao_moi_mau_sac: '/mau-sac/tao-moi',
     cap_nhat_mau_sac: (id) => `/mau-sac/${id}`,
-    thuong_hieu: '/thuong-hieu/danh-sach',
-    tao_moi_thuong_hieu: '/thuong-hieu/tao-moi',
-    cap_nhat_thuong_hieu: (id) => `/thuong-hieu/${id}`,
+    thuong_hieu: '/danh-muc/danh-sach',
+    tao_moi_thuong_hieu: '/danh-muc/tao-moi',
+    cap_nhat_thuong_hieu: (id) => `/danh-muc/${id}`,
   },
 };
 
