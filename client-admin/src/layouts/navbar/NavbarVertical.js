@@ -6,7 +6,7 @@ import useResponsive from '../../hooks/useResponsive';
 import { Layout, Menu, Drawer } from 'antd';
 import './navbar-vertical-style.css'
 import { LogoMobile } from '../../components/Logo';
-import { FaUserGroup, FaUserTag, FaCartPlus, FaChartPie } from "react-icons/fa6";
+import { FaTags, FaUserGroup, FaUserTag, FaCartPlus, FaChartPie, FaSliders } from "react-icons/fa6";
 import { RiShoppingBag3Fill } from "react-icons/ri";
 import { DUONG_DAN_TRANG } from '../../routes/duong-dan';
 
@@ -49,19 +49,23 @@ export default function NavbarVertical({ isCollapse, isOpenSidebar, onCloseSideb
 
     if (pathname.includes('/voucher')) {
       setSelectedKey(['voucher']);
-      setOpenKeys(['discount']);
+      setOpenKeys([]);
     }
     else if (pathname.includes('/san-pham')) {
       setSelectedKey(['product']);
-      setOpenKeys(['product-management']);
+      setOpenKeys([]);
     }
-    else if (pathname.includes('/thuong-hieu')) {
+    else if (pathname.includes('/danh-muc')) {
       setSelectedKey(['brand']);
-      setOpenKeys(['product-management']);
+      setOpenKeys([]);
     }
     else if (pathname.includes('/mau-sac')) {
       setSelectedKey(['color']);
-      setOpenKeys(['product-management']);
+      setOpenKeys(['attributes']);
+    }
+    else if (pathname.includes('/chat-lieu')) {
+      setSelectedKey(['material']);
+      setOpenKeys(['attributes']);
     }
     else if (pathname.includes('/thong-ke')) {
       setSelectedKey(['statistics']);
@@ -144,6 +148,8 @@ export default function NavbarVertical({ isCollapse, isOpenSidebar, onCloseSideb
 }
 
 const ICONS = {
+  attributes: <FaSliders color='#38B6FF' size={15} />,
+  category: <FaTags color='#38B6FF' size={15} />,
   voucher: <FaUserTag color='#38B6FF' size={15} />,
   account: <FaUserGroup color='#38B6FF' size={15} />,
   statistics: <FaChartPie color='#38B6FF' size={15} />,
@@ -176,24 +182,17 @@ const items = [
     icon: ICONS.bill,
   },
   {
-    key: 'product-management',
-    label: <SpanStyle label="Quản lý sản phẩm" />,
+    key: 'product',
+    label: <Link to={DUONG_DAN_TRANG.san_pham.danh_sach}>
+      <SpanStyle label="Quản lý sản phẩm" />
+    </Link>,
     icon: ICONS.product,
+  },
+  {
+    key: 'attributes',
+    label: <SpanStyle label='Quản lý thuộc tính' />,
+    icon: ICONS.attributes,
     children: [
-      {
-        key: 'product',
-        label:
-          <Link to={DUONG_DAN_TRANG.san_pham.danh_sach}>
-            <SpanStyle label="Sản phẩm" />
-          </Link>
-      },
-      {
-        key: 'brand',
-        label:
-          <Link to={DUONG_DAN_TRANG.san_pham.thuong_hieu}>
-            <SpanStyle label="Thương hiệu" />
-          </Link>
-      },
       {
         key: 'color',
         label:
@@ -201,7 +200,21 @@ const items = [
             <SpanStyle label="Màu sắc" />
           </Link>
       },
+      {
+        key: 'material',
+        label:
+          <Link to={DUONG_DAN_TRANG.san_pham.chat_lieu}>
+            <SpanStyle label="Chất liệu" />
+          </Link>
+      },
     ],
+  },
+  {
+    key: 'brand',
+    label: <Link to={DUONG_DAN_TRANG.san_pham.thuong_hieu}>
+      <SpanStyle label="Quản lý danh mục" />
+    </Link>,
+    icon: ICONS.category,
   },
   {
     key: 'account',
@@ -224,18 +237,11 @@ const items = [
       },
     ],
   },
-  // {
-  //   key: 'discount',
-  //   label: <SpanStyle label="Khuyến mãi" />,
-  //   icon: ICONS.voucher,
-  //   children: [
-  //     {
-  //       key: 'voucher',
-  //       label:
-  //         <Link to={DUONG_DAN_TRANG.voucher.danh_sach}>
-  //           <SpanStyle label='Voucher' />
-  //         </Link>
-  //     },
-  //   ],
-  // },
+  {
+    key: 'voucher',
+    label: <Link to={DUONG_DAN_TRANG.voucher.danh_sach}>
+      <SpanStyle label="Mã giảm giá" />
+    </Link>,
+    icon: ICONS.voucher,
+  },
 ];
