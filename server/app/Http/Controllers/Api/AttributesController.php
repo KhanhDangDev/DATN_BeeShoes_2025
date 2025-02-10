@@ -19,16 +19,16 @@ class AttributesController extends Controller
     // index
     public function indexBrand(Request $request)
     {
-        return $this->getAllData(new Brand(),'Success',[],['ma_thuong_hieu', 'ten_thuong_hieu','trang_thai'],['created_at','ngay_tao']);
+        return $this->getAllData(new Brand(), 'Success', [], ['ma_thuong_hieu', 'ten_thuong_hieu', 'trang_thai'], ['created_at', 'ngay_tao']);
     }
 
     public function indexColor(Request $request)
     {
-        return $this->getAllData(new Color(),'Success',[],['ma_mau_sac', 'ten_mau_sac','trang_thai'],['created_at','ngay_tao']);
+        return $this->getAllData(new Color(), 'Success', [], ['ma_mau_sac', 'ten_mau_sac', 'trang_thai'], ['created_at', 'ngay_tao']);
     }
     public function indexMaterial(Request $request)
     {
-        return $this->getAllData(new Material(),'Success',[],['ma_chat_lieu', 'ten_chat_lieu','trang_thai'],['created_at','ngay_tao']);
+        return $this->getAllData(new Material(), 'Success', [], ['ma_chat_lieu', 'ten_chat_lieu', 'trang_thai'], ['created_at', 'ngay_tao']);
     }
 
     public function createModelInstance($tableName)
@@ -217,9 +217,15 @@ class AttributesController extends Controller
     }
 
     // destroy
-    public function destroyBrand(Request $request) {}
-    public function destroyColor(Request $request) {}
-    public function destroyMaterial(Request $request) {}
+    public function destroyBrand(Request $request)
+    {
+    }
+    public function destroyColor(Request $request)
+    {
+    }
+    public function destroyMaterial(Request $request)
+    {
+    }
 
     public function updateStatus(Request $request)
     {

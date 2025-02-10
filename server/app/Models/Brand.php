@@ -27,7 +27,7 @@ class Brand extends Model
 
 
     // Quy ước ngay_tao đổi qua múi giờ mới, định dạng mới.
-    public function getNgayTaoAttribute($value)
+    public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s');
     }
