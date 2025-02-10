@@ -13,15 +13,15 @@ trait ApiDataTrait
     {
         try {
             $filters = request()->query();
-    
+
             $query = $model::with($relations);
-    
+
             foreach ($filters as $field => $value) {
-<<<<<<< HEAD
+
                 if (!empty($value)) {
-        
+
                     $column = \Str::snake($field);
-    
+
                     if (in_array($column, $filterableFields)) {
 
                         if (\Str::startsWith($column, 'ten_')) {
@@ -31,52 +31,48 @@ trait ApiDataTrait
                         } else {
                             $query->where($column, $value);
                         }
-=======
-                if (!empty($value) && in_array($field, $filterableFields)) {
-                    if (\Str::startsWith($field, 'ten_')) {
-                        $query->where($field, 'like', "%$value%");
-                    } else {
-                        $query->where($field, $value);
->>>>>>> develop
+
                     }
                 }
             }
-            foreach($dates as $date){
-                if(isset($filters['start_date']) && isset($filters['end_date'])){
+            if (!empty($filters['tuKhoa'])) {
+                $query->where(function ($q) use ($filters, $filterableFields) {
+                    foreach ($filterableFields as $field) {
+                        $q->orWhere($field, 'like', "%{$filters['tuKhoa']}%");
+                    }
+                });
+            }
+            foreach ($dates as $date) {
+                if (isset($filters['start_date']) && isset($filters['end_date'])) {
 
                     $query->whereBetween($date, [$filters['start_date'], $filters['end_date']]);
 
-                }elseif(isset($filters['from_date'])){
+                } elseif (isset($filters['from_date'])) {
 
                     $query->where($date, '>=', $filters['from_date']);
 
-                }elseif(isset($filters['to_date'])){
-                    
+                } elseif (isset($filters['to_date'])) {
+
                     $query->where($date, '<=', $filters['to_date']);
                 }
             }
-    
+
             $perPage = request()->query('per_page', 10);
             $data = $query->paginate($perPage);
-    
+
             if ($data->isEmpty()) {
                 return response()->json([
                     'message' => 'Không tìm thấy dữ liệu',
                     'data' => []
                 ], Response::HTTP_NOT_FOUND);
             }
-    
-<<<<<<< HEAD
+
             return ApiResponse::responsePage($data);
 
-=======
-            return ApiResponse::responseObject($data, Response::HTTP_OK, $message);
->>>>>>> develop
         } catch (\Exception $e) {
             return ApiResponse::responseError(500, $e->getMessage(), $message);
         }
     }
-    
 
     public function getDataById(Model $model, $id, $relations = [], $message = "Sản phẩm")
     {
@@ -106,11 +102,8 @@ trait ApiDataTrait
                 return response()->json([
                     'message' => 'Không tìm thấy dữ liệu',
                 ], Response::HTTP_NOT_FOUND);
-<<<<<<< HEAD
-}
-=======
+
             }
->>>>>>> develop
 
             if (!in_array($status, ["dang_hoat_dong", "ngung_hoat_dong"])) {
                 return response()->json([
@@ -128,8 +121,5 @@ trait ApiDataTrait
             return ApiResponse::responseError(500, $e->getMessage());
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> develop
+
