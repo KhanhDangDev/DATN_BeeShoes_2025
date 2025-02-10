@@ -36,10 +36,15 @@ trait ApiDataTrait
                 }
             }
             if (!empty($filters['tuKhoa'])) {
-                $query->where(function ($q) use ($filters, $filterableFields) {
+
+                $tuKhoa = trim($filters['tuKhoa']); 
+
+                $query->where(function ($q) use ($tuKhoa, $filterableFields) {
+
                     foreach ($filterableFields as $field) {
-                        $q->orWhere($field, 'like', "%{$filters['tuKhoa']}%");
+                        $q->orWhere($field, 'like', "%$tuKhoa%");
                     }
+
                 });
             }
             foreach ($dates as $date) {
@@ -64,7 +69,7 @@ trait ApiDataTrait
                 return response()->json([
                     'message' => 'Không tìm thấy dữ liệu',
                     'data' => []
-                ], Response::HTTP_NOT_FOUND);
+                ], Response::HTTP_OK);
             }
 
             return ApiResponse::responsePage($data);
