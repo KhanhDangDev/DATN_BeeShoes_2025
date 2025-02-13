@@ -13,61 +13,74 @@ trait ApiDataTrait
     {
         try {
             $filters = request()->query();
-    
+
             $query = $model::with($relations);
-    
+
             foreach ($filters as $field => $value) {
-                if (!empty($value) && in_array($field, $filterableFields)) {
-                    if (\Str::startsWith($field, 'ten_')) {
-                        $query->where($field, 'like', "%$value%");
-                    } else {
-                        $query->where($field, $value);
+
+                if (!empty($value)) {
+
+                    $column = \Str::snake($field);
+
+                    if (in_array($column, $filterableFields)) {
+
+                        if (\Str::startsWith($column, 'ten_')) {
+
+                            $query->where($column, 'like', "%$value%");
+                        } else {
+                            $query->where($column, $value);
+                        }
                     }
                 }
             }
-            foreach($dates as $date){
-                if(isset($filters['start_date']) && isset($filters['end_date'])){
+            if (!empty($filters['tuKhoa'])) {
+                $query->where(function ($q) use ($filters, $filterableFields) {
+                    foreach ($filterableFields as $field) {
+                        $q->orWhere($field, 'like', "%{$filters['tuKhoa']}%");
+                    }
+                });
+            }
+            foreach ($dates as $date) {
+                if (isset($filters['start_date']) && isset($filters['end_date'])) {
 
                     $query->whereBetween($date, [$filters['start_date'], $filters['end_date']]);
-
-                }elseif(isset($filters['from_date'])){
+                } elseif (isset($filters['from_date'])) {
 
                     $query->where($date, '>=', $filters['from_date']);
+                } elseif (isset($filters['to_date'])) {
 
-                }elseif(isset($filters['to_date'])){
-                    
                     $query->where($date, '<=', $filters['to_date']);
                 }
             }
-    
+
+            $query->orderBy('created_at', 'desc');
             $perPage = request()->query('per_page', 10);
             $data = $query->paginate($perPage);
-    
-            if ($data->isEmpty()) {
-                return response()->json([
-                    'message' => 'Không tìm thấy dữ liệu',
-                    'data' => []
-                ], Response::HTTP_NOT_FOUND);
-            }
-    
-            return ApiResponse::responseObject($data, Response::HTTP_OK, $message);
+
+            // if ($data->isEmpty()) {
+            //     return response()->json([
+            //         'message' => 'Không tìm thấy dữ liệu',
+            //         'data' => []
+            //     ], Response::HTTP_NOT_FOUND);
+            // }
+
+            return ApiResponse::responsePage($data);
         } catch (\Exception $e) {
             return ApiResponse::responseError(500, $e->getMessage(), $message);
         }
     }
-    
 
     public function getDataById(Model $model, $id, $relations = [], $message = "Sản phẩm")
     {
         try {
             $data = $model::with($relations)->findOrFail($id);
 
-            if (!$data) {
-                return response()->json([
-                    'message' => 'Khong tim thay du lieu',
-                    'data' => []
-                ], Response::HTTP_NOT_FOUND);
-            }
+            // if (!$data) {
+            //     return response()->json([
+            //         'message' => 'Khong tim thay du lieu',
+            //         'data' => []
+            //     ], Response::HTTP_NOT_FOUND);
+            // }
 
             return ApiResponse::responseObject($data, Response::HTTP_OK, $message);
         } catch (\Exception $e) {

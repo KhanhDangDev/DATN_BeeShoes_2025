@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\ProductController;
 
 // Sản phẩm
 Route::get('/danh-sach-san-pham', [ProductController::class, 'index']);
+Route::get('/danh-sach-attribute', [ProductController::class, 'indexAttribute']);
 Route::post('/them-san-pham', [ProductController::class, 'store']);
 Route::post('/them-kich-co', [ProductController::class, 'storeKichCo']);
 Route::get('/tim-san-pham/{id}', [ProductController::class, 'show']);

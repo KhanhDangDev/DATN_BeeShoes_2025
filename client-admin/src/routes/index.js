@@ -36,9 +36,9 @@ export default function Router() {
         {
           path: 'danh-muc',
           children: [
-            { path: 'danh-sach', element: <DanhSachThuongHieu /> },
-            { path: 'tao-moi', element: <ThemSuaThuongHieu /> },
-            { path: ':id', element: <ThemSuaThuongHieu /> },
+            { path: 'danh-sach', element: <DanhSachDanhMuc /> },
+            { path: 'tao-moi', element: <ThemSuaDanhMuc /> },
+            { path: ':id', element: <ThemSuaDanhMuc /> },
           ],
         },
 
@@ -124,3 +124,6 @@ const ThongKe = Loadable(lazy(() => import('../pages/dashboard/thong-ke/ThongKe'
 
 const DanhSachVoucher = Loadable(lazy(() => import('../pages/dashboard/voucher/DanhSachVoucher')));
 const ThemSuaVoucher = Loadable(lazy(() => import('../pages/dashboard/voucher/ThemSuaVoucher')));
+
+const DanhSachDanhMuc = Loadable(lazy(() => import('../pages/dashboard/danh-muc/DanhSachDanhMuc')));
+const ThemSuaDanhMuc = Loadable(lazy(() => import('../pages/dashboard/danh-muc/ThemSuaDanhMuc')));

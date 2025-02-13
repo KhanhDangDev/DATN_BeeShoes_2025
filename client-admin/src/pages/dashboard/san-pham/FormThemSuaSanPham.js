@@ -32,6 +32,7 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
   const navigate = useNavigate();
   const [listMauSac, setListMauSac] = useState([]);
   const [listThuongHieu, setListThuongHieu] = useState([]);
+  const [listChatLieu, setListChatLieu] = useState([]);
 
   useEffect(() => {
     // khai báo hàm lấy dữ liệu thuộc tính sản phẩm
@@ -40,11 +41,12 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
       onOpenLoading();
       try {
         // gọi api từ backend
-        const response = await axios.get("http://127.0.0.1:8000/api/danh-sach-thuoc-tinh");
+        const response = await axios.get("http://127.0.0.1:8000/api/danh-sach-attribute");
 
         // nếu gọi api thành công sẽ set dữ liệu
-        setListMauSac(response.data.data.listMauSac); // set dữ liệu được trả về từ backend
-        setListThuongHieu(response.data.data.listThuongHieu); // set dữ liệu được trả về từ backend
+        setListMauSac(response.data.data.mauSac); // set dữ liệu được trả về từ backend
+        setListThuongHieu(response.data.data.thuongHieu); // set dữ liệu được trả về từ backend
+        setListChatLieu(response.data.data.chatLieu); // set dữ liệu được trả về từ backend
       } catch (error) {
         console.error(error);
         // console ra lỗi
@@ -57,6 +59,7 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
     layDuLieuThuocTinhTuBackEnd();
   }, [])
 
+
   // validate
   const SanPhamSchema = Yup.object().shape({
     tenSanPham: Yup.string().trim().required('Tên không được bỏ trống'),
@@ -64,6 +67,7 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
     donGia: Yup.string().required('Đơn giá không được bỏ trống'),
     idMauSac: Yup.string().required('Màu không được bỏ trống'),
     idThuongHieu: Yup.string().required('Thương hiệu không được bỏ trống'),
+    idChatLieu: Yup.string().required('Chất liệu không được bỏ trống'),
   });
 
   // giá trị mặc định của biến, tương tự useState
@@ -74,6 +78,7 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
     donGia: sanPhamHienTai?.donGia || '',
     idMauSac: sanPhamHienTai?.idMauSac || null,
     idThuongHieu: sanPhamHienTai?.idThuongHieu || null,
+    idChatLieu: sanPhamHienTai?.idChatLieu || null,
     trangThai: chuyenDoiEnumThanhTrangThai(sanPhamHienTai?.trangThai),
   };
 
@@ -200,7 +205,7 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
                       return (
                         <>
                           <Option key={index} value={mauSac.id}>
-                            <Tag style={{ color: isLightColor(mauSac.ma) ? 'black' : 'white' }} className='fw-500' color={mauSac.ma}>{mauSac.ten}</Tag>
+                            <Tag style={{ color: isLightColor(mauSac.ma_mau_sac) ? 'black' : 'white' }} className='fw-500' color={mauSac.ma_mau_sac}>{mauSac.ten_mau_sac}</Tag>
                           </Option>
                         </>
                       )
@@ -211,6 +216,39 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
               )}
             />
           </Col>
+
+          <Col span={9}>
+            <Controller
+              name='idChatLieu'
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <>
+                  <label className='mt-15 d-block' style={{ fontWeight: '500' }}>
+                    Chất Liệu
+                    <span className='required'></span>
+                  </label>
+                  <Select
+                    className='mt-13'
+                    {...field}
+                    style={{ width: '100%' }}
+                    placeholder='Chọn chất liệu'
+                    status={error && 'error'}
+                  >
+                    {listChatLieu?.map((chatLieu, index) => {
+                      return (
+                        <>
+                          <Option key={index} value={chatLieu.id}>{chatLieu.ten_chat_lieu}</Option>
+                        </>
+                      )
+                    })}
+                  </Select>
+                  {error && <span className='color-red mt-3 d-block'>{error?.message}</span>}
+                </>
+              )}
+            />
+          </Col>
+
+              
 
           <Col span={9}>
             <Controller
@@ -232,7 +270,7 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
                     {listThuongHieu?.map((thuongHieu, index) => {
                       return (
                         <>
-                          <Option key={index} value={thuongHieu.id}>{thuongHieu.ten}</Option>
+                          <Option key={index} value={thuongHieu.id}>{thuongHieu.ten_thuong_hieu}</Option>
                         </>
                       )
                     })}
@@ -307,9 +345,9 @@ export default function FormThemSuaSanPham({ laCapNhat, sanPhamHienTai }) {
 const chuyenDoiThanhEnum = (trangThai) => {
   switch (trangThai) {
     case "Đang bán":
-      return "dang_hoat_dong";
+      return "dang_kinh_doanh";
     case "Ngừng bán":
-      return "ngung_hoat_dong";
+      return "ngung_kinh_doanh";
     default:
       return null;
   }
@@ -317,9 +355,9 @@ const chuyenDoiThanhEnum = (trangThai) => {
 
 const chuyenDoiEnumThanhTrangThai = (trangThai) => {
   switch (trangThai) {
-    case "dang_hoat_dong":
+    case "dang_kinh_doanh":
       return "Đang bán";
-    case "ngung_hoat_dong":
+    case "ngung_kinh_doanh":
       return "Ngừng bán";
     default:
       return "Đang bán";

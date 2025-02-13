@@ -10,6 +10,10 @@ use App\Http\Requests\Product\AttributeRequestBody;
 use App\Http\Requests\Product\ProductRequestBody;
 use App\Http\Requests\Product\SizeRequestBody;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductResourceList;
+use App\Models\Brand;
+use App\Models\Color;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // sử dụng DB Facades để thực hiện sql
 use App\Models\Product;
@@ -22,9 +26,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $listSanPham = Product::query();
 
+        $listSanPham = DB::table('san_pham')
+            ->join('thuong_hieu', 'san_pham.id_thuong_hieu', '=', 'thuong_hieu.id')
+            ->select('san_pham.id', 'san_pham.ma_san_pham', 'san_pham.ten_san_pham', 'san_pham.mo_ta', 'san_pham.don_gia', 'san_pham.trang_thai', 'thuong_hieu.ten_thuong_hieu');
         // Tìm kiếm theo từ khóa
+
         if ($request->filled('tuKhoa')) {
             $tuKhoa = '%' . $request->tuKhoa . '%';
             $listSanPham->where(function ($query) use ($tuKhoa) {
@@ -34,13 +41,8 @@ class ProductController extends Controller
 
         // lọc theo trạng thái
         if ($request->filled('trangThai')) {
-            $listSanPham->where('trang_thai', '=', $request->trangThai);
+            $listSanPham->where('san_pham.trang_thai', '=', $request->trangThai);
         }
-
-        $listSanPham = DB::table('san_pham')
-            ->join('thuong_hieu', 'san_pham.id_thuong_hieu', '=', 'thuong_hieu.id')
-            ->select('san_pham.id', 'san_pham.ma_san_pham', 'san_pham.ten_san_pham', 'san_pham.mo_ta', 'san_pham.don_gia', 'san_pham.trang_thai', 'thuong_hieu.ten_thuong_hieu')
-            ->orderBy('san_pham.ngay_tao', 'desc');
 
 
         $listSanPham->where(function ($q) use ($request) {
@@ -58,6 +60,8 @@ class ProductController extends Controller
                 $q->where('id_thuong_hieu', $request->idThuongHieu);
             }
         });
+
+        $listSanPham->orderBy('san_pham.ngay_tao', 'desc');
         // Phân trang.
         $responsePagePaginate = $listSanPham->paginate(10, ['*']); // ['*']: để lấy tất cả các cột trong csdl.
 
@@ -67,9 +71,20 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function indexAttribute()
     {
-        //
+
+        $mauSacs = Color::query()->orderBy('ngay_tao', 'desc')->get();
+        $thuongHieus = Brand::query()->orderBy('ngay_tao', 'desc')->get();
+        $chatLieus = Material::query()->orderBy('ngay_tao', 'desc')->get();
+
+        $attributeArray = [
+            "thuongHieu" => $thuongHieus,
+            "mauSac" => $mauSacs,
+            "chatLieu" => $chatLieus,
+        ];
+
+        return ApiResponse::responseObject($attributeArray);
     }
 
     /**
@@ -92,7 +107,6 @@ class ProductController extends Controller
         $sanPhamMoi->ma_san_pham =  $request->maSanPham;
         $sanPhamMoi->ten_san_pham = $request->tenSanPham;
         $sanPhamMoi->mo_ta = $request->moTa;
-        $sanPhamMoi->ngay_tao = $request->ngayTao;
         $sanPhamMoi->don_gia = $request->donGia;
         $sanPhamMoi->trang_thai = $request->trangThai;
         $sanPhamMoi->id_mau_sac = $request->idMauSac;
@@ -135,12 +149,13 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
         $timSanPham = Product::findOrFail($id); // tự động ném lỗi 404 nếu không tìm thấy
-
+        $listKichCoCuaSanPham = Size::where('id_san_pham', '=', $timSanPham->id)->orderBy('ten_kich_co', 'asc')->get();
+        $timSanPham->listKichCo = $listKichCoCuaSanPham;
         // Trả về sản phẩm dưới dạng JSON qua ProductResource
-        return ApiResponse::responseObject(new ProductResource($timSanPham));
+        return ApiResponse::responseObject(new ProductResourceList($timSanPham));
     }
 
 
@@ -209,7 +224,7 @@ class ProductController extends Controller
         return ApiResponse::responseObject($listCuaSanPham);
     }
 
-    public function updateSoluongKichCo(SizeRequestBody $request)
+    public function updateSoluongKichCo(Request $request)
     {
         // tìm id kích cỡ.
         $timKichCo = Size::find($request->id);

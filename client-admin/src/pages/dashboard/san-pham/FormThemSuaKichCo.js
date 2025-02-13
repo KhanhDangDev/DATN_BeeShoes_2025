@@ -60,12 +60,15 @@ export default function FormThemSuaKichCo({ danhSachKichCoHienTai, id }) {
   // hàm gọi api thêm số lượng tồn
   const putSoLuongTon = async (soLuong, idKichCo) => {
     try {
-      const response = await axios.put("http://127.0.0.1:8000/api/so-luong-ton", { soLuongTon: soLuong || 0, id: idKichCo, idSanPham: id }); // gọi api
+      const response = await axios.put("http://127.0.0.1:8000/api/update-so-luong-kich-co", 
+      { soLuongTon: soLuong || 0, id: idKichCo, id_san_pham: id}); // gọi api
+      onOpenSuccessNotify('Cập nhật lượng tồn thành công'); // hiển thị thông báo lỗi
     } catch (error) {
       console.log(error.response.data);
       onOpenErrorNotify(error.response.data.message) // hiển thị thông báo lỗi
     }
   }
+
   const themKichCo = () => {
     if (cacLuaChonTag.length > 0) { // nếu có bất kỳ lựa chọn tag kích cỡ nào
       console.log(cacLuaChonTag);
