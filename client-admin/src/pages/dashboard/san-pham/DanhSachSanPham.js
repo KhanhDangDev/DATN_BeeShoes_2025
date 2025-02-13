@@ -47,13 +47,13 @@ const danhSachCacTruongDuLieu = [
     },
   },
   {
-    title: 'Ngày tạo',
+    title: 'Thương hiệu',
     align: "center",
     render: (text, record) => {
       return (
         <>
           <span className='fw-500'>
-            {record.ngayTao}
+            {record.tenThuongHieu}
           </span>
         </>
       )
@@ -126,6 +126,7 @@ export default function DanhSachSanPham() {
 
         // nếu gọi api thành công sẽ set dữ liệu
         setData(response.data.data); // set dữ liệu được trả về từ backend
+        console.log(response.data.data);
         setTongSoTrang(response.data.page.totalPages); // set tổng số trang được trả về từ backend
       } catch (error) {
         console.error(error);
@@ -175,6 +176,7 @@ export default function DanhSachSanPham() {
                     )
                   })}
                 </Select>
+                
                 <Input
                   addonBefore={<SearchOutlined />}
                   value={tuKhoa}
@@ -214,9 +216,9 @@ const DANH_SACH_TRANG_THAI_SAN_PHAM = ['Đang bán', 'Ngừng bán'];
 const chuyenDoiThanhEnum = (trangThai) => {
   switch (trangThai) {
     case "Đang bán":
-      return "dang_hoat_dong";
+      return "dang_kinh_doanh";
     case "Ngừng bán":
-      return "ngung_hoat_dong";
+      return "ngung_kinh_doanh";
     default:
       return null;
   }
@@ -224,7 +226,7 @@ const chuyenDoiThanhEnum = (trangThai) => {
 
 const hienThiTrangThai = (trangThai) => {
   switch (trangThai) {
-    case "dang_hoat_dong":
+    case "dang_kinh_doanh":
       return "Đang bán";
     default:
       return "Ngừng bán";
@@ -233,7 +235,7 @@ const hienThiTrangThai = (trangThai) => {
 
 const hienThiMauSac = (trangThai) => {
   switch (trangThai) {
-    case "dang_hoat_dong":
+    case "dang_kinh_doanh":
       return '#0fd93b';
     default:
       return '#e8190e';
