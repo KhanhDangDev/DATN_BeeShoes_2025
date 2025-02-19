@@ -69,7 +69,128 @@ trait ApiDataTrait
             return ApiResponse::responseError(500, $e->getMessage(), $message);
         }
     }
+    public function getAllDataCustomer(Model $model, $message = "Danh sách ", $relations = [], array $filterableFields = [], array $dates = [])
+    {
+        try {
+            $filters = request()->query();
 
+            $query = $model::with($relations);
+
+            foreach ($filters as $field => $value) {
+
+                if (!empty($value)) {
+
+                    $column = \Str::snake($field);
+
+                    if (in_array($column, $filterableFields)) {
+
+                        if (\Str::startsWith($column, 'ten_')) {
+
+                            $query->where($column, 'like', "%$value%");
+                        } else {
+                            $query->where($column, $value);
+                        }
+                    }
+                }
+            }
+            if (!empty($filters['tuKhoa'])) {
+                $query->where(function ($q) use ($filters, $filterableFields) {
+                    foreach ($filterableFields as $field) {
+                        $q->orWhere($field, 'like', "%{$filters['tuKhoa']}%");
+                    }
+                });
+            }
+
+            if (isset($filters['gioi_tinh']) && $filters['gioi_tinh'] != -1) {
+                $query->where('gioi_tinh', $filters['gioi_tinh']);
+            }
+
+            foreach ($dates as $date) {
+                if (isset($filters['start_date']) && isset($filters['end_date'])) {
+
+                    $query->whereBetween($date, [$filters['start_date'], $filters['end_date']]);
+                } elseif (isset($filters['from_date'])) {
+
+                    $query->where($date, '>=', $filters['from_date']);
+                } elseif (isset($filters['to_date'])) {
+
+                    $query->where($date, '<=', $filters['to_date']);
+                }
+            }
+
+            $query->orderBy('created_at', 'desc');
+            $perPage = request()->query('per_page', 10);
+            $page = request()->query('page', 1);
+            $data = $query->paginate($perPage, ['*'], 'page', $page);
+
+            return ApiResponse::responsePage($data);
+        } catch (\Exception $e) {
+            return ApiResponse::responseError(500, $e->getMessage(), $message);
+        }
+    }
+    public function getAllDataStaff(Model $model, $message = "Danh sách ", $relations = [], array $filterableFields = [], array $dates = [])
+    {
+        try {
+            $filters = request()->query();
+
+            $query = $model::with($relations);
+
+            foreach ($filters as $field => $value) {
+
+                if (!empty($value)) {
+
+                    $column = \Str::snake($field);
+
+                    if (in_array($column, $filterableFields)) {
+
+                        if (\Str::startsWith($column, 'ten_')) {
+
+                            $query->where($column, 'like', "%$value%");
+                        } else {
+                            $query->where($column, $value);
+                        }
+                    }
+                }
+            }
+            if (!empty($filters['tuKhoa'])) {
+                $query->where(function ($q) use ($filters, $filterableFields) {
+                    foreach ($filterableFields as $field) {
+                        $q->orWhere($field, 'like', "%{$filters['tuKhoa']}%");
+                    }
+                });
+            }
+
+            if (isset($filters['gioi_tinh']) && $filters['gioi_tinh'] != -1) {
+                $query->where('gioi_tinh', $filters['gioi_tinh']);
+            }
+            
+            if (isset($filters['trang_thai']) && $filters['trang_thai'] != -1) {
+                $query->where('trang_thai', $filters['trang_thai']);
+            }
+
+            foreach ($dates as $date) {
+                if (isset($filters['start_date']) && isset($filters['end_date'])) {
+
+                    $query->whereBetween($date, [$filters['start_date'], $filters['end_date']]);
+                } elseif (isset($filters['from_date'])) {
+
+                    $query->where($date, '>=', $filters['from_date']);
+                } elseif (isset($filters['to_date'])) {
+
+                    $query->where($date, '<=', $filters['to_date']);
+                }
+            }
+
+            $query->orderBy('created_at', 'desc');
+            $perPage = request()->query('per_page', 10);
+            $page = request()->query('page', 1);
+            $data = $query->paginate($perPage, ['*'], 'page', $page);
+
+            return ApiResponse::responsePage($data);
+        } catch (\Exception $e) {
+            return ApiResponse::responseError(500, $e->getMessage(), $message);
+        }
+    }
     public function getDataById(Model $model, $id, $relations = [], $message = "Sản phẩm")
     {
         try {
