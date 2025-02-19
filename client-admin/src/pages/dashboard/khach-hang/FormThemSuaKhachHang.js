@@ -181,7 +181,7 @@ export default function FormThemSuaKhachHang({ laCapNhat, khachHangHienTai }) {
         ...data, // giữ các biến cũ trong data
         // trangThai: chuyenDoiThanhEnum(data.trangThai), // ghi đè thuộc tính trạng thái trong data, convert thành enum
         gioi_tinh: chuyenDoiThanhEnumGioiTinh(data.gioi_tinh),
-        ngay_sinh: data?.ngay_sinh, // Chuyển đổi định dạng ngày tháng
+        ngay_sinh: moment(data.ngay_sinh, "DD/MM/YYYY").format("YYYY-MM-DD"), // Chuyển đổi định dạng ngày tháng
         id: khachHangHienTai?.id,
       };
       console.log(body);

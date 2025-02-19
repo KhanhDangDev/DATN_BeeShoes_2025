@@ -78,7 +78,7 @@ export default function FormThemSuaNhanVien({ laCapNhat, nhanVienHienTai }) {
     ngay_sinh: Yup.string()
       .required("Thông tin không được để trống")
       .test("is-valid-date", "Thông tin không được để trống", (value) => {
-        console.log("value", value)
+        console.log("value", value);
         return dayjs(value, "DD/MM/YYYY", true).isValid();
       }),
     mat_khau: Yup.string()
@@ -186,7 +186,7 @@ export default function FormThemSuaNhanVien({ laCapNhat, nhanVienHienTai }) {
         ...data, // giữ các biến cũ trong data
         trang_thai: chuyenDoiThanhEnum(data.trang_thai), // ghi đè thuộc tính trạng thái trong data, convert thành enum
         gioi_tinh: chuyenDoiThanhEnumGioiTinh(data.gioi_tinh),
-        ngay_sinh: data?.ngay_sinh, // Chuyển đổi định dạng ngày tháng
+        ngay_sinh: moment(data.ngay_sinh, "DD/MM/YYYY").format("YYYY-MM-DD"), // Chuyển đổi định dạng ngày tháng
         id: nhanVienHienTai?.id, // id của nhân viên cần cập nhật
       };
       console.log(body);
