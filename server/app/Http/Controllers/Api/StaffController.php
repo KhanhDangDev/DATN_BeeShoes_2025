@@ -76,7 +76,7 @@ class StaffController extends Controller
             'ngay_sinh' => 'required|date',
         ], [
             'ma_nhan_vien.required' => 'Mã không được bỏ trống.',
-            'ma_nhan_vien.unique' => 'Mã khách hàng đã tồn tại.',
+            'ma_nhan_vien.unique' => 'Mã nhân viên đã tồn tại.',
             'ten_nhan_vien.required' => 'Tên không được bỏ trống.',
             'mat_khau.required' => 'Mật khẩu không được bỏ trống.',
             'trang_thai.required' => 'Trạng thái không được bỏ trống.',
@@ -161,7 +161,7 @@ class StaffController extends Controller
             'ngay_sinh' => 'required|date',
         ], [
             'ma_nhan_vien.required' => 'Mã không được bỏ trống.',
-            'ma_nhan_vien.unique' => 'Mã khách hàng đã tồn tại.',
+            'ma_nhan_vien.unique' => 'Mã nhân viên đã tồn tại.',
             'ten_nhan_vien.required' => 'Tên không được bỏ trống.',
             'mat_khau.required' => 'Mật khẩu không được bỏ trống.',
             'trang_thai.required' => 'Trạng thái không được bỏ trống.',
