@@ -1,101 +1,111 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { formatCurrencyVnd } from '../../../utils/formatCurrency';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { formatCurrencyVnd } from "../../../utils/formatCurrency";
 import { FaPenToSquare } from "react-icons/fa6";
 // antd
-import { Input, Table, Tag, Flex, Select, Tooltip, Pagination } from 'antd';
-import { PlusOutlined, SearchOutlined } from '@ant-design/icons';
+import { Input, Table, Tag, Flex, Select, Tooltip, Pagination } from "antd";
+import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 // routes
-import { Link } from 'react-router-dom';
-import { DUONG_DAN_TRANG } from '../../../routes/duong-dan';
+import { Link } from "react-router-dom";
+import { DUONG_DAN_TRANG } from "../../../routes/duong-dan";
 // components
-import Page from '../../../components/Page';
-import Container from '../../../components/Container';
-import { HeaderBreadcrumbs } from '../../../components/HeaderSection';
-import IconButton from '../../../components/IconButton';
-import Space from '../../../components/Space';
+import Page from "../../../components/Page";
+import Container from "../../../components/Container";
+import { HeaderBreadcrumbs } from "../../../components/HeaderSection";
+import IconButton from "../../../components/IconButton";
+import Space from "../../../components/Space";
 // hooks
-import useLoading from '../../../hooks/useLoading';
+import useLoading from "../../../hooks/useLoading";
 
 const { Option } = Select;
 
 const danhSachCacTruongDuLieu = [
   {
-    title: 'Mã nhân viên',
+    title: "Mã nhân viên",
     align: "center",
     render: (text, record) => {
       return (
         <>
-          <span className='fw-500'>
-            {record.ma}
-          </span>
+          <span className="fw-500">{record.ma_nhan_vien}</span>
         </>
-      )
+      );
     },
   },
   {
-    title: 'Tên nhân viên',
+    title: "Tên nhân viên",
     align: "center",
     render: (text, record) => {
       return (
         <>
-          <span className='fw-500'>
-            {record.hoVaTen}
-          </span>
+          <span className="fw-500">{record.ten_nhan_vien}</span>
         </>
-      )
+      );
     },
   },
   {
-    title: 'Số điện thoại',
+    title: "Giới tính",
     align: "center",
     render: (text, record) => {
       return (
         <>
-          <span className='fw-500'>
-            {record.soDienThoai}
+          <span className="fw-500">
+            {record.gioi_tinh === 1 ? "Nam" : "Nữ"}
           </span>
         </>
-      )
+      );
     },
   },
   {
-    title: 'Email',
+    title: "Số điện thoại",
     align: "center",
     render: (text, record) => {
       return (
         <>
-          <span className='fw-500'>
-            {record.email}
-          </span>
+          <span className="fw-500">{record.so_dien_thoai}</span>
         </>
-      )
+      );
     },
   },
   {
-    title: 'Trạng thái',
+    title: "Email",
     align: "center",
     render: (text, record) => {
       return (
         <>
-          <span className='fw-500' style={{ color: 'red' }} >
-            <Tag className='ms-10 fw-500' color={hienThiMauSac(record.trangThai)}>{hienThiTrangThai(record.trangThai)}</Tag>
-          </span>
+          <span className="fw-500">{record.email}</span>
         </>
-      )
+      );
     },
   },
   {
-    title: 'Thao tác',
+    title: "Trạng thái",
+    align: "center",
+    render: (text, record) => {
+      return (
+        <>
+          <span className="fw-500" style={{ color: "red" }}>
+            <Tag
+              className="ms-10 fw-500"
+              color={hienThiMauSac(record.trang_thai)}
+            >
+              {hienThiTrangThai(record.trang_thai)}
+            </Tag>
+          </span>
+        </>
+      );
+    },
+  },
+  {
+    title: "Thao tác",
     align: "center",
     render: (text, record) => {
       return (
         <Tooltip title="Chỉnh sửa">
           <Link to={DUONG_DAN_TRANG.nhan_vien.cap_nhat(record.id)}>
-            <FaPenToSquare className='mt-8 fs-20 root-color' />
+            <FaPenToSquare className="mt-8 fs-20 root-color" />
           </Link>
         </Tooltip>
-      )
+      );
     },
   },
 ];
@@ -103,10 +113,11 @@ const danhSachCacTruongDuLieu = [
 export default function DanhSachSanPham() {
   const { onOpenLoading, onCloseLoading } = useLoading();
   const [data, setData] = useState([]);
-  const [trangThai, setTrangThai] = useState(null);
+  const [trangThai, setTrangThai] = useState(-1);
   const [tuKhoa, setTuKhoa] = useState("");
   const [tongSoTrang, setTongSoTrang] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [gioiTinh, setGioiTinh] = useState(-1);
 
   useEffect(() => {
     // khai báo hàm lấy dữ liệu
@@ -115,14 +126,18 @@ export default function DanhSachSanPham() {
       onOpenLoading();
       try {
         // gọi api từ backend
-        const response = await axios.get("http://127.0.0.1:8000/api/nhan-vien", {
-          // các tham số gửi về backend
-          params: {
-            currentPage,
-            tuKhoa,
-            trangThai: chuyenDoiThanhEnum(trangThai),
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/nhan-vien",
+          {
+            // các tham số gửi về backend
+            params: {
+              page: currentPage,
+              tuKhoa,
+              trang_thai: chuyenDoiThanhEnum(trangThai),
+              gioi_tinh: gioiTinh,
+            },
           }
-        });
+        );
 
         // nếu gọi api thành công sẽ set dữ liệu
         setData(response.data.data); // set dữ liệu được trả về từ backend
@@ -134,23 +149,23 @@ export default function DanhSachSanPham() {
         onCloseLoading();
         // tắt loading
       }
-    }
+    };
 
     // gọi hàm vừa khai báo
     layDuLieuTuBackEnd();
-  }, [tuKhoa, trangThai, currentPage]) // hàm sẽ được gọi khi các biến này được thay đổi 
+  }, [tuKhoa, trangThai, currentPage, gioiTinh]); // hàm sẽ được gọi khi các biến này được thay đổi
 
   return (
     <>
-      <Page title='Danh sách nhân viên'>
+      <Page title="Danh sách nhân viên">
         <Container>
           <HeaderBreadcrumbs
-            heading='Danh sách nhân viên'
+            heading="Danh sách nhân viên"
             action={
               <Link to={DUONG_DAN_TRANG.nhan_vien.tao_moi}>
                 <IconButton
-                  type='primary'
-                  name='Thêm nhân viên'
+                  type="primary"
+                  name="Thêm nhân viên"
                   icon={<PlusOutlined />}
                 />
               </Link>
@@ -158,33 +173,65 @@ export default function DanhSachSanPham() {
           />
 
           <Space
-            className='mt-15 d-flex'
+            className="mt-15 d-flex"
             title={
               <Flex gap={14} style={{ padding: "15px 0px" }}>
                 <Select
-                  value={trangThai}
-                  onChange={(value) => setTrangThai(value)}
+                  value={trangThai == -1 ? undefined : trangThai}
+                  onChange={(value) => {
+                    setCurrentPage(1);
+                    setTrangThai(value);
+                  }}
                   style={{ width: WIDTH_SELECT }}
-                  placeholder="Trạng thái"
+                  placeholder="Tất cả trạng thái"
                 >
+                  {" "}
+                  <Option key={-1} value={-1}>
+                    Tất cả trạng thái
+                  </Option>
                   {DANH_SACH_TRANG_THAI_NHAN_VIEN.map((trangThai, index) => {
                     return (
                       <>
-                        <Option key={index} value={trangThai}>{trangThai}</Option>
+                        <Option key={index} value={trangThai}>
+                          {trangThai}
+                        </Option>
                       </>
-                    )
+                    );
                   })}
+                </Select>
+                <Select
+                  value={gioiTinh == -1 ? undefined : gioiTinh}
+                  onChange={(value) => {
+                    setCurrentPage(1);
+                    setGioiTinh(value);
+                  }}
+                  style={{ width: WIDTH_SELECT }}
+                  placeholder="Tất cả giới tính"
+                >
+                  <Option key={-1} value={-1}>
+                    Tất cả giới tính
+                  </Option>
+                  <Option key={1} value={1}>
+                    Nam
+                  </Option>
+                  <Option key={0} value={0}>
+                    Nữ
+                  </Option>
                 </Select>
                 <Input
                   addonBefore={<SearchOutlined />}
                   value={tuKhoa}
-                  onChange={(e) => setTuKhoa(e.target.value)}
-                  placeholder="Tìm kiếm sản phẩm..." />
+                  onChange={(e) => {
+                    setCurrentPage(1);
+                    setTuKhoa(e.target.value);
+                  }}
+                  placeholder="Tìm kiếm sản phẩm..."
+                />
               </Flex>
             }
           >
             <Table
-              className=''
+              className=""
               rowKey={"id"}
               columns={danhSachCacTruongDuLieu}
               dataSource={data} // dữ liệu từ backend
@@ -192,12 +239,12 @@ export default function DanhSachSanPham() {
             />
 
             <Pagination
-              // sử dụng component phân trang 
-              align='end'
+              // sử dụng component phân trang
+              align="end"
               current={currentPage} // trang hiện tại
               onChange={(page) => setCurrentPage(page)} // sự kiện thay đổi trang hiện tại
               total={tongSoTrang} // tổng số trang
-              className='mt-20'
+              className="mt-20"
               pageSize={10} // kích thước trang gồm 10 phần tử (10 phần tử trên 1 trang)
               showSizeChanger={false}
             />
@@ -205,11 +252,11 @@ export default function DanhSachSanPham() {
         </Container>
       </Page>
     </>
-  )
+  );
 }
 
 const WIDTH_SELECT = 300;
-const DANH_SACH_TRANG_THAI_NHAN_VIEN = ['Đang hoạt động', 'Ngừng hoạt động'];
+const DANH_SACH_TRANG_THAI_NHAN_VIEN = ["Đang hoạt động", "Ngừng hoạt động"];
 
 const chuyenDoiThanhEnum = (trangThai) => {
   switch (trangThai) {
@@ -234,9 +281,8 @@ const hienThiTrangThai = (trangThai) => {
 const hienThiMauSac = (trangThai) => {
   switch (trangThai) {
     case "dang_hoat_dong":
-      return '#0fd93b';
+      return "#0fd93b";
     default:
-      return '#e8190e';
+      return "#e8190e";
   }
-}
-
+};

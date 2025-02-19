@@ -19,6 +19,30 @@ return new class extends Migration
     {
         // Tài khoản
 
+        // Khách hàng
+        Schema::create('khach_hang', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('ma_khach_hang')->unique();
+            $table->string('ten_khach_hang', SystemConstant::DEFAULT_MAX_LENGTH);
+            $table->string('email')->unique();
+            $table->string('so_dien_thoai')->unique();
+            $table->tinyInteger('gioi_tinh')->nullable();
+            $table->date('ngay_sinh')->nullable();
+            $table->timestamps();
+        });
+        // Nhân viên
+        Schema::create('nhan_vien', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('ma_nhan_vien')->unique();
+            $table->string('ten_nhan_vien', SystemConstant::DEFAULT_MAX_LENGTH);
+            $table->string('email')->unique();
+            $table->string('mat_khau')->nullable();
+            $table->string('so_dien_thoai')->unique();
+            $table->tinyInteger('gioi_tinh')->nullable();
+            $table->date('ngay_sinh')->nullable();
+            $table->enum('trang_thai', CommonStatus::CommonStatusArray())->default(CommonStatus::DANG_HOAT_DONG);
+            $table->timestamps();
+        });
         // Màu sắc.
         Schema::create('mau_sac', function (Blueprint $table) {
             $table->uuid('id')->primary();
