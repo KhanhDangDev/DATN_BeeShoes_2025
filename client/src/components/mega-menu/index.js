@@ -1,9 +1,4 @@
-export * from './mobile';
-
-export * from './classes';
-
-export * from './css-vars';
-
-export * from './vertical';
-
-export * from './horizontal';
+export { default as MegaMenuDesktopVertical } from './MegaMenuDesktopVertical';
+export { default as MegaMenuDesktopHorizon } from './MegaMenuDesktopHorizon';
+export { default as MegaMenuMobile } from './MegaMenuMobile';
+export { default as MenuConfig } from './MenuConfig';

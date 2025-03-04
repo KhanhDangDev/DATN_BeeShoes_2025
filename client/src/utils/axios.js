@@ -1,58 +1,62 @@
 import axios from 'axios';
-
-import { CONFIG } from 'src/config-global';
+// config
+import { HOST_API } from '../config';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: CONFIG.site.serverUrl });
+export const axiosInstance = axios.create({
+  baseURL: HOST_API,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  },
+})
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong!')
+  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 
+export const apiGet = (url, params) => {
+  return axiosInstance.get(url, {
+    params,
+  });
+};
+
+export const apiPost = (url, data) => {
+  return axiosInstance.post(url, data);
+};
+
+export const apiFormData = (url, data) => {
+  return axiosInstance.post(url, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      'Access-Control-Allow-Credentials': true
+    },
+  });
+};
+
+export const apiFormDataPut = (url, data) => {
+  return axiosInstance.put(url, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Access-Control-Allow-Origin': "*",
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      'Access-Control-Allow-Credentials': true
+    },
+  });
+};
+
+export const apiPut = (url, data) => {
+  return axiosInstance.put(url, data);
+};
+
+export const apiDelete = (url, params) => {
+  return axiosInstance.delete(url, {
+    params
+  });
+};
+
 export default axiosInstance;
-
-// ----------------------------------------------------------------------
-
-export const fetcher = async (args) => {
-  try {
-    const [url, config] = Array.isArray(args) ? args : [args];
-
-    const res = await axiosInstance.get(url, { ...config });
-
-    return res.data;
-  } catch (error) {
-    console.error('Failed to fetch:', error);
-    throw error;
-  }
-};
-
-// ----------------------------------------------------------------------
-
-export const endpoints = {
-  chat: '/api/chat',
-  kanban: '/api/kanban',
-  calendar: '/api/calendar',
-  auth: {
-    me: '/api/auth/me',
-    signIn: '/api/auth/sign-in',
-    signUp: '/api/auth/sign-up',
-  },
-  mail: {
-    list: '/api/mail/list',
-    details: '/api/mail/details',
-    labels: '/api/mail/labels',
-  },
-  post: {
-    list: '/api/post/list',
-    details: '/api/post/details',
-    latest: '/api/post/latest',
-    search: '/api/post/search',
-  },
-  product: {
-    list: '/api/product/list',
-    details: '/api/product/details',
-    search: '/api/product/search',
-  },
-};

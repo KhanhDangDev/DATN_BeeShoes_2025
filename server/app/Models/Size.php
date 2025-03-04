@@ -2,25 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Size extends Model
+class Size extends BaseModel
 {
 
-    use HasUuids;
-    // bỏ tự động tăng của id.
-    public $incrementing = false;
-
-    // khai báo kiểu dữ liệu uuid.
-    protected $keyType = 'string';
-
-    protected $table = 'kich_co';
-
     protected $fillable = [
-        'id_san_pham',
-        'ten_kich_co',
-        'so_luong_ton',
-        'trang_thai'
+        'code',
+        'name',
+        'status',
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        $this->fillable = array_merge(parent::getBaseFillable(), $this->fillable);
+        parent::__construct($attributes);
+    }
 }

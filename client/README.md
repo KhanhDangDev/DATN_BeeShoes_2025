@@ -1,54 +1,42 @@
-## Prerequisites
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-- Node.js 20.x (Recommended)
+## 1.Install
 
-## Installation
+### npm
 
-**Using Yarn (Recommended)**
-
-```sh
-yarn install
-yarn dev
 ```
-
-**Using Npm**
-
-```sh
 npm i
-npm run dev
+or
+npm i --legacy-peer-deps
 ```
 
-## Build
+### yarn
+
+```
+yarn install
+```
+
+## 2.Start
 
 ```sh
-yarn build
-# or
-npm run build
+npm start
+or
+yarn start
 ```
 
-## Mock server
+## 3.Build
 
-By default we provide demo data from : `https://api-dev-minimal-[version].vercel.app`
+```sh
+npm run build or yarn build
+```
 
-To set up your local server:
+Builds the app for production to the `build` folder.<br>
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-- **Guide:** [https://docs.minimals.cc/mock-server](https://docs.minimals.cc/mock-server).
+The build is minified and the filenames include the hashes.<br>
 
-- **Resource:** [Download](https://www.dropbox.com/sh/6ojn099upi105tf/AACpmlqrNUacwbBfVdtt2t6va?dl=0).
+Your app is ready to be deployed.
 
-## Full version
+## User Guide
 
-- Create React App ([migrate to CRA](https://docs.minimals.cc/migrate-to-cra/)).
-- Next.js
-- Vite.js
-
-## Starter version
-
-- To remove unnecessary components. This is a simplified version ([https://starter.minimals.cc/](https://starter.minimals.cc/))
-- Good to start a new project. You can copy components from the full version.
-- Make sure to install the dependencies exactly as compared to the full version.
-
----
-
-**NOTE:**
-_When copying folders remember to also copy hidden files like .env. This is important because .env files often contain environment variables that are crucial for the application to run correctly._
+You can find detailed instructions on using Create React App and many tips in [its documentation](https://facebook.github.io/create-react-app/).

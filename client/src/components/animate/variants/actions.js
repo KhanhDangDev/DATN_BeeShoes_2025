@@ -1,6 +1,7 @@
 // ----------------------------------------------------------------------
 
-export const varHover = (hover = 1.09, tap = 0.97) => ({
-  hover: { scale: hover },
-  tap: { scale: tap },
+export const varHover = (scale) => ({
+  hover: {
+    scale: scale || 1.1
+  }
 });

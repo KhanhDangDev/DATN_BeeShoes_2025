@@ -1,13 +1,14 @@
-export * from './mini';
+import { matchPath } from 'react-router-dom';
 
-export * from './hooks';
+// ----------------------------------------------------------------------
 
-export * from './styles';
+export { default as NavSectionVertical } from './vertical';
+export { default as NavSectionHorizontal } from './horizontal';
 
-export * from './classes';
+export function isExternalLink(path) {
+  return path.includes('http');
+}
 
-export * from './css-vars';
-
-export * from './vertical';
-
-export * from './horizontal';
+export function getActive(path, pathname) {
+  return path ? !!matchPath({ path, end: false }, pathname) : false;
+}

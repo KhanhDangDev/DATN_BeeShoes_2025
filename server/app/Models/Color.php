@@ -2,31 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Color extends Model
+class Color extends BaseModel
 {
 
-    use HasUuids;
-    // bỏ tính năng tự động tăng của id.
-    public $incrementing = false;
-
-    // khai báo kiểu dữ liệu của uuid.
-    public $keyType = 'string';
-
-    protected $table = 'mau_sac';
-
     protected $fillable = [
-        'ma_mau_sac',
-        'ten_mau_sac',
-        'ngay_tao',
-        'trang_thai'
+        'code',
+        'name',
+        'status',
     ];
 
-    public function getNgayTaoAttribute($value)
+    public function __construct(array $attributes = [])
     {
-        return Carbon::parse($value)->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s');
+        $this->fillable = array_merge(parent::getBaseFillable(), $this->fillable);
+        parent::__construct($attributes);
     }
 }

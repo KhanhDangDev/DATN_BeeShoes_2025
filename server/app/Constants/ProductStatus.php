@@ -4,15 +4,14 @@ namespace App\Constants;
 
 class ProductStatus
 {
-    const DANG_KINH_DOANH = 'dang_kinh_doanh';
-    const NGUNG_KINH_DOANH = 'ngung_kinh_doanh';
+    const IS_ACTIVE = 'is_active';
+    const UN_ACTIVE = 'un_active';
 
-    // Nếu muốn trả về tất cả trạng thái dưới dạng mảng
-    public static function ProductStatusArray()
+    public static function toArray(): array
     {
         return [
-            self::DANG_KINH_DOANH,
-            self::NGUNG_KINH_DOANH
+            self::IS_ACTIVE,
+            self::UN_ACTIVE,
         ];
     }
 }

@@ -1,71 +1,70 @@
-import { _mock } from './_mock';
+import _mock from './_mock';
+import { randomNumberRange, randomInArray } from './funcs';
 
 // ----------------------------------------------------------------------
 
-export const USER_STATUS_OPTIONS = [
-  { value: 'active', label: 'Active' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'banned', label: 'Banned' },
-  { value: 'rejected', label: 'Rejected' },
-];
-
 export const _userAbout = {
   id: _mock.id(1),
-  role: _mock.role(1),
+  cover: _mock.image.cover(1),
+  position: 'UI Designer',
+  follower: randomNumberRange(999, 99999),
+  following: randomNumberRange(999, 99999),
+  quote: 'Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..',
+  country: _mock.address.country(1),
   email: _mock.email(1),
-  school: _mock.companyNames(2),
-  company: _mock.companyNames(1),
-  country: _mock.countryNames(2),
-  coverUrl: _mock.image.cover(3),
-  totalFollowers: _mock.number.nativeL(1),
-  totalFollowing: _mock.number.nativeL(2),
-  quote:
-    'Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..',
-  socialLinks: {
-    facebook: `https://www.facebook.com/caitlyn.kerluke`,
-    instagram: `https://www.instagram.com/caitlyn.kerluke`,
-    linkedin: `https://www.linkedin.com/in/caitlyn.kerluke`,
-    twitter: `https://www.twitter.com/caitlyn.kerluke`,
-  },
+  company: _mock.company(1),
+  school: _mock.company(2),
+  role: 'Manager',
+  facebookLink: `https://www.facebook.com/caitlyn.kerluke`,
+  instagramLink: `https://www.instagram.com/caitlyn.kerluke`,
+  linkedinLink: `https://www.linkedin.com/in/caitlyn.kerluke`,
+  twitterLink: `https://www.twitter.com/caitlyn.kerluke`,
 };
 
 export const _userFollowers = [...Array(18)].map((_, index) => ({
   id: _mock.id(index),
-  name: _mock.fullName(index),
-  country: _mock.countryNames(index),
   avatarUrl: _mock.image.avatar(index),
+  name: _mock.name.fullName(index),
+  country: _mock.address.country(index),
+  isFollowed: _mock.boolean(index),
 }));
 
 export const _userFriends = [...Array(18)].map((_, index) => ({
   id: _mock.id(index),
-  role: _mock.role(index),
-  name: _mock.fullName(index),
   avatarUrl: _mock.image.avatar(index),
+  name: _mock.name.fullName(index),
+  role: _mock.role(index),
 }));
 
 export const _userGallery = [...Array(12)].map((_, index) => ({
   id: _mock.id(index),
-  postedAt: _mock.time(index),
-  title: _mock.postTitle(index),
+  title: _mock.text.title(index),
+  postAt: _mock.time(index),
   imageUrl: _mock.image.cover(index),
 }));
 
 export const _userFeeds = [...Array(3)].map((_, index) => ({
   id: _mock.id(index),
+  author: {
+    id: _mock.id(8),
+    avatarUrl: _mock.image.avatar(1),
+    name: 'Caitlyn Kerluke',
+  },
+  isLiked: true,
   createdAt: _mock.time(index),
-  media: _mock.image.travel(index + 1),
-  message: _mock.sentence(index),
-  personLikes: [...Array(20)].map((__, personIndex) => ({
-    name: _mock.fullName(personIndex),
-    avatarUrl: _mock.image.avatar(personIndex + 2),
+  media: _mock.image.feed(index),
+  message: _mock.text.sentence(index),
+  personLikes: [...Array(36)].map((_, index) => ({
+    name: _mock.name.fullName(index),
+    avatarUrl: _mock.image.avatar(index + 2),
   })),
   comments: (index === 2 && []) || [
     {
       id: _mock.id(7),
       author: {
         id: _mock.id(8),
-        avatarUrl: _mock.image.avatar(index + 5),
-        name: _mock.fullName(index + 5),
+        avatarUrl: _mock.image.avatar(randomInArray([2, 3, 4, 5, 6]) || 2),
+        name: _mock.name.fullName(index + 5),
       },
       createdAt: _mock.time(2),
       message: 'Praesent venenatis metus at',
@@ -74,8 +73,8 @@ export const _userFeeds = [...Array(3)].map((_, index) => ({
       id: _mock.id(9),
       author: {
         id: _mock.id(10),
-        avatarUrl: _mock.image.avatar(index + 6),
-        name: _mock.fullName(index + 6),
+        avatarUrl: _mock.image.avatar(randomInArray([7, 8, 9, 10, 11]) || 7),
+        name: _mock.name.fullName(index + 6),
       },
       createdAt: _mock.time(3),
       message:
@@ -84,60 +83,53 @@ export const _userFeeds = [...Array(3)].map((_, index) => ({
   ],
 }));
 
-export const _userCards = [...Array(21)].map((_, index) => ({
+export const _userCards = [...Array(24)].map((_, index) => ({
   id: _mock.id(index),
-  role: _mock.role(index),
-  name: _mock.fullName(index),
-  coverUrl: _mock.image.cover(index),
   avatarUrl: _mock.image.avatar(index),
-  totalFollowers: _mock.number.nativeL(index),
-  totalPosts: _mock.number.nativeL(index + 2),
-  totalFollowing: _mock.number.nativeL(index + 1),
+  cover: _mock.image.cover(index),
+  name: _mock.name.fullName(index),
+  follower: randomNumberRange(999, 99999),
+  following: randomNumberRange(999, 99999),
+  totalPost: randomNumberRange(999, 99999),
+  position: _mock.role(index),
 }));
 
-export const _userPayment = [...Array(3)].map((_, index) => ({
+export const _userPayment = [...Array(2)].map((_, index) => ({
   id: _mock.id(index),
   cardNumber: ['**** **** **** 1234', '**** **** **** 5678', '**** **** **** 7878'][index],
-  cardType: ['mastercard', 'visa', 'visa'][index],
-  primary: index === 1,
+  cardType: ['master_card', 'visa', 'master_card'][index],
 }));
 
 export const _userAddressBook = [...Array(4)].map((_, index) => ({
   id: _mock.id(index),
-  primary: index === 0,
-  name: _mock.fullName(index),
-  phoneNumber: _mock.phoneNumber(index),
-  fullAddress: _mock.fullAddress(index),
-  addressType: (index === 0 && 'Home') || 'Office',
+  name: _mock.name.fullName(index),
+  phone: _mock.phoneNumber(index),
+  country: _mock.address.country(index),
+  state: 'New Hampshire',
+  city: 'East Sambury',
+  street: '41256 Kamille Turnpike',
+  zipCode: '85807',
 }));
 
 export const _userInvoices = [...Array(10)].map((_, index) => ({
   id: _mock.id(index),
-  invoiceNumber: `INV-199${index}`,
   createdAt: _mock.time(index),
   price: _mock.number.price(index),
 }));
 
-export const _userPlans = [
-  { subscription: 'basic', price: 0, primary: false },
-  { subscription: 'starter', price: 4.99, primary: true },
-  { subscription: 'premium', price: 9.99, primary: false },
-];
-
-export const _userList = [...Array(20)].map((_, index) => ({
+export const _userList = [...Array(24)].map((_, index) => ({
   id: _mock.id(index),
-  zipCode: '85807',
+  avatarUrl: _mock.image.avatar(index),
+  name: _mock.name.fullName(index),
+  email: _mock.email(index),
+  phoneNumber: _mock.phoneNumber(index),
+  address: '908 Jack Locks',
+  country: _mock.address.country(index),
   state: 'Virginia',
   city: 'Rancho Cordova',
-  role: _mock.role(index),
-  email: _mock.email(index),
-  address: '908 Jack Locks',
-  name: _mock.fullName(index),
+  zipCode: '85807',
+  company: _mock.company(index),
   isVerified: _mock.boolean(index),
-  company: _mock.companyNames(index),
-  country: _mock.countryNames(index),
-  avatarUrl: _mock.image.avatar(index),
-  phoneNumber: _mock.phoneNumber(index),
-  status:
-    (index % 2 && 'pending') || (index % 3 && 'banned') || (index % 4 && 'rejected') || 'active',
+  status: randomInArray(['active', 'banned']),
+  role: _mock.role(index),
 }));

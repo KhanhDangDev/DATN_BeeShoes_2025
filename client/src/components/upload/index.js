@@ -1,11 +1,3 @@
-export * from './upload';
-
-export * from './upload-box';
-
-export * from './upload-avatar';
-
-export * from './components/rejection-files';
-
-export * from './components/preview-multi-file';
-
-export * from './components/preview-single-file';
+export { default as UploadAvatar } from './UploadAvatar';
+export { default as UploadMultiFile } from './UploadMultiFile';
+export { default as UploadSingleFile } from './UploadSingleFile';

@@ -1,19 +1,13 @@
+// ----------------------------------------------------------------------
+
 export * from './variants';
 
-export * from './back-to-top';
+export { default as DialogAnimate } from './DialogAnimate';
+export { default as TextAnimate } from './TextAnimate';
 
-export * from './animate-text';
+export { default as FabButtonAnimate } from './FabButtonAnimate';
+export { default as IconButtonAnimate } from './IconButtonAnimate';
 
-export * from './animate-logo';
-
-export * from './animate-avatar';
-
-export * from './animate-border';
-
-export * from './motion-viewport';
-
-export * from './scroll-progress';
-
-export * from './animate-count-up';
-
-export * from './motion-container';
+export { default as MotionViewport } from './MotionViewport';
+export { default as MotionContainer } from './MotionContainer';
+export { default as MotionLazyContainer } from './MotionLazyContainer';

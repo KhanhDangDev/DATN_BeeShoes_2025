@@ -2,33 +2,20 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Brand extends Model
+class Brand extends BaseModel
 {
 
-    use HasUuids;
-
-    public $incrementing = false;
-
-    // khai báo kiểu dữ liệu của uuid.
-    public $keyType = 'string';
-
-    protected $table = 'thuong_hieu';
-
     protected $fillable = [
-        'ma_thuong_hieu',
-        'ten_thuong_hieu',
-        'ngay_tao',
-        'trang_thai'
+        'code',
+        'name',
+        'status',
     ];
 
-
-    // Quy ước ngay_tao đổi qua múi giờ mới, định dạng mới.
-    public function getCreatedAtAttribute($value)
+    public function __construct(array $attributes = [])
     {
-        return Carbon::parse($value)->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i:s');
+        $this->fillable = array_merge(parent::getBaseFillable(), $this->fillable);
+        parent::__construct($attributes);
     }
 }

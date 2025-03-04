@@ -1,25 +1,18 @@
-export * from './_job';
+import _mock from './_mock';
 
-export * from './_mock';
+// ----------------------------------------------------------------------
 
+export * from './_app';
 export * from './_user';
-
-export * from './_tour';
-
-export * from './_blog';
-
-export * from './assets';
-
-export * from './_files';
-
-export * from './_order';
-
+export * from './_plans';
 export * from './_others';
-
+export * from './_booking';
+export * from './_banking';
 export * from './_invoice';
+export * from './_voucher';
+export * from './_ecommerce';
+export * from './_analytics';
+export * from './_countries';
+export * from './_top100Films';
 
-export * from './_product';
-
-export * from './_overview';
-
-export * from './_calendar';
+export default _mock;

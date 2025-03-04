@@ -1,22 +1,25 @@
-import { paramCase } from 'src/utils/change-case';
+// ----------------------------------------------------------------------
 
-import { _id, _postTitles } from 'src/_mock/assets';
+function path(root, sublink) {
+  return `${root}${sublink}`;
+}
+
+const ROOTS_AUTH = '/auth';
+const ROOTS_DASHBOARD = '/dashboard';
 
 // ----------------------------------------------------------------------
 
-const MOCK_ID = _id[1];
-
-const MOCK_TITLE = _postTitles[2];
-
-const ROOTS = {
-  AUTH: '/auth',
-  AUTH_DEMO: '/auth-demo',
-  DASHBOARD: '/dashboard',
+export const PATH_AUTH = {
+  root: ROOTS_AUTH,
+  login: path(ROOTS_AUTH, '/login'),
+  register: path(ROOTS_AUTH, '/register'),
+  loginUnprotected: path(ROOTS_AUTH, '/login-unprotected'),
+  registerUnprotected: path(ROOTS_AUTH, '/register-unprotected'),
+  verify: path(ROOTS_AUTH, '/verify'),
+  resetPassword: path(ROOTS_AUTH, '/reset-password'),
 };
 
-// ----------------------------------------------------------------------
-
-export const paths = {
+export const PATH_PAGE = {
   comingSoon: '/coming-soon',
   maintenance: '/maintenance',
   pricing: '/pricing',
@@ -24,160 +27,129 @@ export const paths = {
   about: '/about-us',
   contact: '/contact-us',
   faqs: '/faqs',
-  page403: '/error/403',
-  page404: '/error/404',
-  page500: '/error/500',
+  page404: '/404',
+  page500: '/500',
   components: '/components',
-  docs: 'https://docs.minimals.cc',
-  changelog: 'https://docs.minimals.cc/changelog',
-  zoneStore: 'https://mui.com/store/items/zone-landing-page/',
-  minimalStore: 'https://mui.com/store/items/minimal-dashboard/',
-  freeUI: 'https://mui.com/store/items/minimal-dashboard-free/',
-  figma: 'https://www.figma.com/design/cAPz4pYPtQEXivqe11EcDE/%5BPreview%5D-Minimal-Web.v6.0.0',
+};
+
+export const PATH_DASHBOARD = {
+  root: ROOTS_DASHBOARD,
+  app: path(ROOTS_DASHBOARD, '/app'),
+  bill: {
+    root: path(ROOTS_DASHBOARD, '/bill'),
+    list: path(ROOTS_DASHBOARD, '/bill/list'),
+    details: (id) => path(ROOTS_DASHBOARD, `/bill/${id}/edit`),
+  },
   product: {
-    root: `/product`,
-    checkout: `/product/checkout`,
-    details: (id) => `/product/${id}`,
-    demo: { details: `/product/${MOCK_ID}` },
+    root: path(ROOTS_DASHBOARD, '/product'),
+    list: path(ROOTS_DASHBOARD, '/product/list'),
+    new: path(ROOTS_DASHBOARD, '/product/new'),
+    edit: (id) => path(ROOTS_DASHBOARD, `/product/${id}/edit`),
   },
-  post: {
-    root: `/post`,
-    details: (title) => `/post/${paramCase(title)}`,
-    demo: { details: `/post/${paramCase(MOCK_TITLE)}` },
+  attribute: {
+    root: path(ROOTS_DASHBOARD, '/attribute'),
+    color: {
+      root: path(ROOTS_DASHBOARD, '/attribute/color'),
+      list: path(ROOTS_DASHBOARD, '/attribute/color/list'),
+    },
+    category: {
+      root: path(ROOTS_DASHBOARD, '/attribute/category'),
+      list: path(ROOTS_DASHBOARD, '/attribute/category/list'),
+    },
+    size: {
+      root: path(ROOTS_DASHBOARD, '/attribute/size'),
+      list: path(ROOTS_DASHBOARD, '/attribute/size/list'),
+    },
+    brand: {
+      root: path(ROOTS_DASHBOARD, '/attribute/brand'),
+      list: path(ROOTS_DASHBOARD, '/attribute/brand/list'),
+    }
   },
-  // AUTH
-  auth: {
-    amplify: {
-      signIn: `${ROOTS.AUTH}/amplify/sign-in`,
-      verify: `${ROOTS.AUTH}/amplify/verify`,
-      signUp: `${ROOTS.AUTH}/amplify/sign-up`,
-      updatePassword: `${ROOTS.AUTH}/amplify/update-password`,
-      resetPassword: `${ROOTS.AUTH}/amplify/reset-password`,
+  account: {
+    root: path(ROOTS_DASHBOARD, '/account'),
+    customer: {
+      root: path(ROOTS_DASHBOARD, '/account/customer'),
+      list: path(ROOTS_DASHBOARD, '/account/customer/list'),
+      new: path(ROOTS_DASHBOARD, '/account/customer/new'),
+      edit: (id) => path(ROOTS_DASHBOARD, `/account/customer/${id}/edit`)
     },
-    jwt: {
-      signIn: `${ROOTS.AUTH}/jwt/sign-in`,
-      signUp: `${ROOTS.AUTH}/jwt/sign-up`,
-    },
-    firebase: {
-      signIn: `${ROOTS.AUTH}/firebase/sign-in`,
-      verify: `${ROOTS.AUTH}/firebase/verify`,
-      signUp: `${ROOTS.AUTH}/firebase/sign-up`,
-      resetPassword: `${ROOTS.AUTH}/firebase/reset-password`,
-    },
-    auth0: {
-      signIn: `${ROOTS.AUTH}/auth0/sign-in`,
-    },
-    supabase: {
-      signIn: `${ROOTS.AUTH}/supabase/sign-in`,
-      verify: `${ROOTS.AUTH}/supabase/verify`,
-      signUp: `${ROOTS.AUTH}/supabase/sign-up`,
-      updatePassword: `${ROOTS.AUTH}/supabase/update-password`,
-      resetPassword: `${ROOTS.AUTH}/supabase/reset-password`,
-    },
+    employee: {
+      root: path(ROOTS_DASHBOARD, '/account/employee'),
+      list: path(ROOTS_DASHBOARD, '/account/employee/list'),
+      new: path(ROOTS_DASHBOARD, '/account/employee/new'),
+      edit: (id) => path(ROOTS_DASHBOARD, `/account/employee/${id}/edit`),
+    }
   },
-  authDemo: {
-    split: {
-      signIn: `${ROOTS.AUTH_DEMO}/split/sign-in`,
-      signUp: `${ROOTS.AUTH_DEMO}/split/sign-up`,
-      resetPassword: `${ROOTS.AUTH_DEMO}/split/reset-password`,
-      updatePassword: `${ROOTS.AUTH_DEMO}/split/update-password`,
-      verify: `${ROOTS.AUTH_DEMO}/split/verify`,
+  discount: {
+    root: path(ROOTS_DASHBOARD, '/discount'),
+    voucher: {
+      root: path(ROOTS_DASHBOARD, '/discount/voucher'),
+      list: path(ROOTS_DASHBOARD, '/discount/voucher/list'),
+      new: path(ROOTS_DASHBOARD, '/discount/voucher/new'),
+      edit: (id) => path(ROOTS_DASHBOARD, `/discount/voucher/${id}/edit`),
     },
-    centered: {
-      signIn: `${ROOTS.AUTH_DEMO}/centered/sign-in`,
-      signUp: `${ROOTS.AUTH_DEMO}/centered/sign-up`,
-      resetPassword: `${ROOTS.AUTH_DEMO}/centered/reset-password`,
-      updatePassword: `${ROOTS.AUTH_DEMO}/centered/update-password`,
-      verify: `${ROOTS.AUTH_DEMO}/centered/verify`,
-    },
+    promotion: {
+      root: path(ROOTS_DASHBOARD, '/discount/promotion'),
+      list: path(ROOTS_DASHBOARD, '/discount/promotion/list'),
+      // new: path(ROOTS_DASHBOARD, '/voucher/new'),
+      // edit: (id) => path(ROOTS_DASHBOARD, `/voucher/${id}/edit`),
+    }
   },
-  // DASHBOARD
-  dashboard: {
-    root: ROOTS.DASHBOARD,
-    mail: `${ROOTS.DASHBOARD}/mail`,
-    chat: `${ROOTS.DASHBOARD}/chat`,
-    blank: `${ROOTS.DASHBOARD}/blank`,
-    kanban: `${ROOTS.DASHBOARD}/kanban`,
-    calendar: `${ROOTS.DASHBOARD}/calendar`,
-    fileManager: `${ROOTS.DASHBOARD}/file-manager`,
-    permission: `${ROOTS.DASHBOARD}/permission`,
-    general: {
-      app: `${ROOTS.DASHBOARD}/app`,
-      ecommerce: `${ROOTS.DASHBOARD}/ecommerce`,
-      analytics: `${ROOTS.DASHBOARD}/analytics`,
-      banking: `${ROOTS.DASHBOARD}/banking`,
-      booking: `${ROOTS.DASHBOARD}/booking`,
-      file: `${ROOTS.DASHBOARD}/file`,
-      course: `${ROOTS.DASHBOARD}/course`,
-    },
-    user: {
-      root: `${ROOTS.DASHBOARD}/user`,
-      new: `${ROOTS.DASHBOARD}/user/new`,
-      list: `${ROOTS.DASHBOARD}/user/list`,
-      cards: `${ROOTS.DASHBOARD}/user/cards`,
-      profile: `${ROOTS.DASHBOARD}/user/profile`,
-      account: `${ROOTS.DASHBOARD}/user/account`,
-      edit: (id) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
-      demo: {
-        edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
-      },
-    },
-    product: {
-      root: `${ROOTS.DASHBOARD}/product`,
-      new: `${ROOTS.DASHBOARD}/product/new`,
-      details: (id) => `${ROOTS.DASHBOARD}/product/${id}`,
-      edit: (id) => `${ROOTS.DASHBOARD}/product/${id}/edit`,
-      demo: {
-        details: `${ROOTS.DASHBOARD}/product/${MOCK_ID}`,
-        edit: `${ROOTS.DASHBOARD}/product/${MOCK_ID}/edit`,
-      },
-    },
-    invoice: {
-      root: `${ROOTS.DASHBOARD}/invoice`,
-      new: `${ROOTS.DASHBOARD}/invoice/new`,
-      details: (id) => `${ROOTS.DASHBOARD}/invoice/${id}`,
-      edit: (id) => `${ROOTS.DASHBOARD}/invoice/${id}/edit`,
-      demo: {
-        details: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}`,
-        edit: `${ROOTS.DASHBOARD}/invoice/${MOCK_ID}/edit`,
-      },
-    },
-    post: {
-      root: `${ROOTS.DASHBOARD}/post`,
-      new: `${ROOTS.DASHBOARD}/post/new`,
-      details: (title) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}`,
-      edit: (title) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}/edit`,
-      demo: {
-        details: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}`,
-        edit: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}/edit`,
-      },
-    },
-    order: {
-      root: `${ROOTS.DASHBOARD}/order`,
-      details: (id) => `${ROOTS.DASHBOARD}/order/${id}`,
-      demo: {
-        details: `${ROOTS.DASHBOARD}/order/${MOCK_ID}`,
-      },
-    },
-    job: {
-      root: `${ROOTS.DASHBOARD}/job`,
-      new: `${ROOTS.DASHBOARD}/job/new`,
-      details: (id) => `${ROOTS.DASHBOARD}/job/${id}`,
-      edit: (id) => `${ROOTS.DASHBOARD}/job/${id}/edit`,
-      demo: {
-        details: `${ROOTS.DASHBOARD}/job/${MOCK_ID}`,
-        edit: `${ROOTS.DASHBOARD}/job/${MOCK_ID}/edit`,
-      },
-    },
-    tour: {
-      root: `${ROOTS.DASHBOARD}/tour`,
-      new: `${ROOTS.DASHBOARD}/tour/new`,
-      details: (id) => `${ROOTS.DASHBOARD}/tour/${id}`,
-      edit: (id) => `${ROOTS.DASHBOARD}/tour/${id}/edit`,
-      demo: {
-        details: `${ROOTS.DASHBOARD}/tour/${MOCK_ID}`,
-        edit: `${ROOTS.DASHBOARD}/tour/${MOCK_ID}/edit`,
-      },
-    },
+  general: {
+    app: path(ROOTS_DASHBOARD, '/app'),
+    ecommerce: path(ROOTS_DASHBOARD, '/ecommerce'),
+    analytics: path(ROOTS_DASHBOARD, '/analytics'),
+    banking: path(ROOTS_DASHBOARD, '/banking'),
+    booking: path(ROOTS_DASHBOARD, '/booking'),
+  },
+  mail: {
+    root: path(ROOTS_DASHBOARD, '/mail'),
+    all: path(ROOTS_DASHBOARD, '/mail/all'),
+  },
+  chat: {
+    root: path(ROOTS_DASHBOARD, '/chat'),
+    new: path(ROOTS_DASHBOARD, '/chat/new'),
+    view: (name) => path(ROOTS_DASHBOARD, `/chat/${name}`),
+  },
+  calendar: path(ROOTS_DASHBOARD, '/calendar'),
+  kanban: path(ROOTS_DASHBOARD, '/kanban'),
+  user: {
+    root: path(ROOTS_DASHBOARD, '/user'),
+    new: path(ROOTS_DASHBOARD, '/user/new'),
+    list: path(ROOTS_DASHBOARD, '/user/list'),
+    cards: path(ROOTS_DASHBOARD, '/user/cards'),
+    profile: path(ROOTS_DASHBOARD, '/user/profile'),
+    account: path(ROOTS_DASHBOARD, '/user/account'),
+    edit: (name) => path(ROOTS_DASHBOARD, `/user/${name}/edit`),
+    demoEdit: path(ROOTS_DASHBOARD, `/user/reece-chung/edit`),
+  },
+  eCommerce: {
+    root: path(ROOTS_DASHBOARD, '/e-commerce'),
+    shop: path(ROOTS_DASHBOARD, '/e-commerce/shop'),
+    list: path(ROOTS_DASHBOARD, '/e-commerce/list'),
+    checkout: path(ROOTS_DASHBOARD, '/e-commerce/checkout'),
+    new: path(ROOTS_DASHBOARD, '/e-commerce/product/new'),
+    view: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}`),
+    edit: (name) => path(ROOTS_DASHBOARD, `/e-commerce/product/${name}/edit`),
+    demoEdit: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-blazer-low-77-vintage/edit'),
+    demoView: path(ROOTS_DASHBOARD, '/e-commerce/product/nike-air-force-1-ndestrukt'),
+  },
+  invoice: {
+    root: path(ROOTS_DASHBOARD, '/invoice'),
+    list: path(ROOTS_DASHBOARD, '/invoice/list'),
+    new: path(ROOTS_DASHBOARD, '/invoice/new'),
+    view: (id) => path(ROOTS_DASHBOARD, `/invoice/${id}`),
+    edit: (id) => path(ROOTS_DASHBOARD, `/invoice/${id}/edit`),
+    demoEdit: path(ROOTS_DASHBOARD, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b1/edit'),
+    demoView: path(ROOTS_DASHBOARD, '/invoice/e99f09a7-dd88-49d5-b1c8-1daf80c2d7b5'),
+  },
+  blog: {
+    root: path(ROOTS_DASHBOARD, '/blog'),
+    posts: path(ROOTS_DASHBOARD, '/blog/posts'),
+    new: path(ROOTS_DASHBOARD, '/blog/new'),
+    view: (title) => path(ROOTS_DASHBOARD, `/blog/post/${title}`),
+    demoView: path(ROOTS_DASHBOARD, '/blog/post/apply-these-7-secret-techniques-to-improve-event'),
   },
 };
+
+export const PATH_DOCS = 'https://docs-minimals.vercel.app/introduction';
