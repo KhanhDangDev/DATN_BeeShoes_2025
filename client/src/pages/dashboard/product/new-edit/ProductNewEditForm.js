@@ -178,15 +178,6 @@ export default function ProductNewEditForm({ isEdit, currentProduct, onUpdateDat
     stripHtml(description?.trim()) !== currentProduct?.description ||
     brand?.id !== currentProduct?.brandId ||
     status !== (currentProduct?.status === ProductStatusTab.en.IS_ACTIVE);
-  // compareArrays(currentProduct?.categories, categorys, "id") ||
-  // // compareArrays(currentProduct?.colors, colors, "id") ||
-  // // compareArrays(currentProduct?.sizes, sizes, "id") ||
-  // compareArrayValues(oldProductItems, newProductItems, "quantity") ||
-  // compareArrayValues(oldProductItems, newProductItems, "status") ||
-  // compareArrayValues(oldProductItems, newProductItems, "price") ||
-  // compareArrayValues(currentProductImages, currentVariantImages, "isDefault") ||
-  // compareArrays(oldProductItems, newProductItems, "id") ||
-  // compareArrays(currentProductImages, currentVariantImages, "path");
 
   const handleCancel = () => {
     if (!isDefault && !isEdit) {
@@ -231,31 +222,9 @@ export default function ProductNewEditForm({ isEdit, currentProduct, onUpdateDat
       };
     });
 
-    // const productItemsNeedRemove = oldProductItems?.filter((item) => {
-    //   return !productItems?.some((productItem) => productItem?.id === item.id);
-    // }).map((item) => item.id);
-    // const imagesNeedRemove = currentProductImages?.filter((item) => {
-    //   return !currentVariantImages?.some((image) => image?.id === item.id);
-    // }).map((item) => item.id);
-    // const imagesCloudNeedRemove = currentProductImages?.filter((item) => {
-    //   return !currentVariantImages?.some((image) => image?.id === item.id);
-    // }).map((item) => item.publicId);
-    // const images = variants.flatMap((variant) =>
-    //   variant.images.map((image) => image)
-    // );
-    // const imageFiles = variants?.flatMap((variant) =>
-    //   variant?.imageFiles?.map((image) => image)
-    // );
-    // const imagesNeedCreate = images.filter((item) => !item?.id);
-    // const isErrorValidateProductItems = productItems.some((item) => !item.price) || variants.some((variant) =>
-    //   variant.images.length < IMAGE_MIN_LENGTH) || variants.some((variant) => variant.images.every((image) => !image?.isDefault));
-    // if (!isErrorValidateProductItems) {
+   
     const body = {
       ...newData,
-      // productItemsNeedRemove,
-      // imagesNeedRemove,
-      // imagesNeedCreate,
-      // imagesCloudNeedRemove,
       categoryIds,
       brandId,
       // id,
