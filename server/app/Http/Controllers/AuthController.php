@@ -294,28 +294,7 @@ class AuthController extends Controller
         $response = Auth::user();
         $role = Role::find(Auth::user()->role_id)->code;
         $response['role'] = $role;
-
-        $notifies = Notification::where('account_id', Auth::user()->id)->where('is_seen', 0)->orderBy('created_at', 'desc')->get();
-        $response['notifies'] = $notifies;
         return ApiResponse::responseObject(new AccountResource($response));
-    }
-
-    public function updateNotifies($id)
-    {
-        $notifies = Notification::where('url', $id)->get();
-        try {
-            DB::beginTransaction();
-            foreach ($notifies as $notify) {
-                $notify->is_seen = 1;
-                $notify->save();
-                DB::commit();
-            }
-        } catch (\Exception $e) {
-            throw new RestApiException($e->getMessage());
-        }
-
-        $notifiesNew = Notification::where('account_id', Auth::user()->id)->where('is_seen', 0)->orderBy('created_at', 'desc')->get();
-        return ApiResponse::responseObject($notifiesNew);
     }
 
     public function getAddressDefault()
@@ -588,12 +567,12 @@ class AuthController extends Controller
     protected function createNewTokenAdmin($token)
     {
         $role = Role::find(Auth::user()->role_id)->code;
-        $notifies = Notification::where('account_id', Auth::user()->id)->where('is_seen', 0)->orderBy('created_at', 'desc')->get();
+        // $notifies = Notification::where('account_id', Auth::user()->id)->where('is_seen', 0)->orderBy('created_at', 'desc')->get();
 
         $response['accessToken'] = $token;
         $response['user'] = new AccountResource(auth()->user());
         $response['user']['role'] = $role;
-        $response['user']['notifies'] = $notifies;
+        // $response['user']['notifies'] = $notifies;
 
         // $response['expires_in'] = auth()->factory()->getTTL() * 60;
         // $response = new Response();

@@ -23,24 +23,14 @@ class Product extends BaseModel
         $offSet = ($req->currentPage - 1) * $req->pageSize;
 
         $query = "
-            WITH PRODUCT_QUANTITY AS (
-              SELECT PRODUCT_ID, SUM(QUANTITY) AS totalQuantity
-              FROM PRODUCT_DETAILS
-              GROUP BY PRODUCT_ID
-            ),
-            PRODUCT_DEFAULT_IMAGE AS (
+            WITH PRODUCT_DEFAULT_IMAGE AS (
               SELECT  PRODUCT_ID, PATH_URL,
               ROW_NUMBER() OVER (PARTITION BY PRODUCT_ID ORDER BY PATH_URL) AS image_rank
               FROM IMAGES
               WHERE IS_DEFAULT = 1
             )
-            SELECT P.id, P.code, P.name, B.name as brand, P.created_at, PQ.totalQuantity, P.status, PDI.path_url as imageUrl,
-              CASE
-                 WHEN PQ.totalQuantity <= 0 THEN 'Hết hàng'
-                 WHEN PQ.totalQuantity <= 10 THEN 'Sắp hết hàng'
-                 ELSE 'Còn hàng' END AS stockStatus
+            SELECT P.id, P.code, P.name, B.name as brand, P.created_at, P.status, PDI.path_url as imageUrl
             FROM PRODUCTS P
-            JOIN PRODUCT_QUANTITY PQ ON P.ID = PQ.PRODUCT_ID
             JOIN (
             SELECT PRODUCT_ID, PATH_URL
             FROM PRODUCT_DEFAULT_IMAGE
@@ -92,17 +82,8 @@ class Product extends BaseModel
         }
 
         $query .= "
-        GROUP BY P.ID, P.CODE, P.NAME, B.NAME, P.CREATED_AT, PQ.totalQuantity, P.STATUS, PDI.PATH_URL
+        GROUP BY P.ID, P.CODE, P.NAME, B.NAME, P.CREATED_AT, P.STATUS, PDI.PATH_URL
         ";
-
-        if ($req->filled('quantityConditions')) {
-            $quantityConditions = explode(',', $req->quantityConditions);
-            $quantityConditions = array_map('trim', $quantityConditions);
-            $quantityConditionsString = implode(' OR ', array_map(function ($condition) {
-                return "PQ.totalQuantity $condition";
-            }, $quantityConditions));
-            $query .= " HAVING $quantityConditionsString ";
-        }
 
         $query .= "
         ORDER BY created_at DESC
