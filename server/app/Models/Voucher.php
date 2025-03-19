@@ -7,12 +7,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Voucher extends BaseModel
 {
-    use SoftDeletes;
-
     protected $fillable = [
         'id',
         'code',
-        'name',
+        'note',
         'value',
         'type_discount',
         'max_discount_value',

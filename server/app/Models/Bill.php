@@ -7,11 +7,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Bill extends BaseModel
 {
-    use SoftDeletes;
-
     protected $fillable = [
         'code',
-        'confirmation_date',
+        'cancellation_date',
         'delivery_date',
         'completion_date',
         'note',

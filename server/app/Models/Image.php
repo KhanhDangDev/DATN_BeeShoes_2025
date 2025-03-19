@@ -8,7 +8,6 @@ class Image extends BaseModel
 {
     protected $fillable = [
         'path_url',
-        'product_color_id',
         'public_id',
         'is_default',
         'product_id',

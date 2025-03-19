@@ -77,23 +77,6 @@ class AuthController extends Controller
             );
         }
 
-        // if (!$token = auth()->attempt($credentials)) {
-        //     return ApiResponse::responseError(
-        //         ConstantSystem::UNAUTHORIZED_CODE,
-        //         ConstantSystem::UNAUTHORIZED,
-        //         "Tài khoản hoặc mật khẩu không chính xác"
-        //     );
-        // }
-
-        // if (Auth::user()->role_id !== $roleCustomer->id) {
-        //     auth()->logout();
-        //     return ApiResponse::responseError(
-        //         ConstantSystem::UNAUTHORIZED_CODE,
-        //         ConstantSystem::UNAUTHORIZED,
-        //         "Tài khoản hoặc mật khẩu không chính xác"
-        //     );
-        // }
-
         if ($account && Hash::check($credentials['password'], $account->password)) {
             $token = auth()->login($account);
             return $this->createNewToken($token, $cartItems);
@@ -557,27 +540,15 @@ class AuthController extends Controller
         $response['user']['addressDefault'] = $this->getAddressDefault();
         $response['isRemoveCartBrowser'] = $isRemoveCartLocalStrorageBrowser;
 
-        // $response['expires_in'] = auth()->factory()->getTTL() * 60;
-        // $response = new Response();
-        // $response->withCookie("jwt_toke");
-
         return ApiResponse::responseObject($response);
     }
 
     protected function createNewTokenAdmin($token)
     {
         $role = Role::find(Auth::user()->role_id)->code;
-        // $notifies = Notification::where('account_id', Auth::user()->id)->where('is_seen', 0)->orderBy('created_at', 'desc')->get();
-
         $response['accessToken'] = $token;
         $response['user'] = new AccountResource(auth()->user());
         $response['user']['role'] = $role;
-        // $response['user']['notifies'] = $notifies;
-
-        // $response['expires_in'] = auth()->factory()->getTTL() * 60;
-        // $response = new Response();
-        // $response->withCookie("jwt_toke");
-
         return ApiResponse::responseObject($response);
     }
 }

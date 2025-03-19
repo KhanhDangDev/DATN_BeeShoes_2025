@@ -59,10 +59,11 @@ return new class extends Migration
 
         // Voucher
         $schema->create('vouchers', function (BaseBlueprint $table) {
-            $table->baseColumn()->addColumnName()->addColumnCode()->addSoftDeletes();
+            $table->baseColumn()->addColumnCode()->addSoftDeletes();
             $table->bigDecimal('value');
-            $table->bigDecimal('max_discount_value');
-            $table->bigDecimal('min_order_value');
+            $table->string('note')->nullable();
+            $table->bigDecimalNullable('max_discount_value');
+            $table->bigDecimalNullable('min_order_value');
             $table->enum('type_discount', VoucherTypeDiscount::toArray())->default(VoucherTypeDiscount::VND);
             $table->enum('status', DiscountStatus::toArray())->default(DiscountStatus::UP_COMMING);
             $table->integer('quantity')->default(0);
