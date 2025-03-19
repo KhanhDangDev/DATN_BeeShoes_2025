@@ -62,13 +62,13 @@ export default function Router() {
       ),
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
-        // {
-        //   path: 'app', element: (
-        //     <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
-        //       <GeneralEcommerce />
-        //     </RoleBasedGuard>
-        //   )
-        // },
+        {
+          path: 'app', element: (
+            <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
+              <GeneralEcommerce />
+            </RoleBasedGuard>
+          )
+        },
         // {
         //   path: 'bill',
         //   children: [
@@ -285,4 +285,4 @@ const Payment = Loadable(lazy(() => import('../pages/Payment')));
 const Page500 = Loadable(lazy(() => import('../pages/Page500')));
 const NotFound = Loadable(lazy(() => import('../pages/Page404')));
 
-// const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));
+const GeneralEcommerce = Loadable(lazy(() => import('../pages/dashboard/GeneralEcommerce')));

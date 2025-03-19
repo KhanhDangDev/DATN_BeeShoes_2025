@@ -82,7 +82,7 @@ function AuthProvider({ children }) {
           const user = response.data?.data;
 
           console.log(user);
-          setNotifies(user?.notifies);
+          // setNotifies(user?.notifies);
 
           dispatch({
             type: 'INITIALIZE',
@@ -124,7 +124,7 @@ function AuthProvider({ children }) {
 
     console.log(accessToken);
     console.log(user);
-          setNotifies(user?.notifies);
+          // setNotifies(user?.notifies);
 
     setSession(accessToken);
     dispatch({

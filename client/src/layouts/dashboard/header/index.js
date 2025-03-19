@@ -88,7 +88,6 @@ export default function DashboardHeader({ onOpenSidebar, isCollapse = false, ver
           <LanguagePopover />
           <ContactsPopover />
           */}
-          <NotificationsPopover />
           <AccountPopover />
         </Stack>
       </Toolbar>
