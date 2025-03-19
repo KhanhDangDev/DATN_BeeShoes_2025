@@ -182,41 +182,40 @@ export default function Router() {
         //   ],
         // },
 
-        // {
-        //   path: 'discount',
-        //   children: [
-        //     {
-        //       path: 'voucher',
-        //       children: [
-        //         { element: <Navigate to="/dashboard/discount/voucher/list" replace />, index: true },
-        //         {
-        //           path: 'list', element: (
-        //             <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
-        //               <VoucherList />
-        //             </RoleBasedGuard>
-        //           )
-        //         },
-        //         // { path: ':id', element: <InvoiceDetails /> },
-        //         {
-        //           path: ':id/edit', element: (
+        {
+          path: 'discount',
+          children: [
+            {
+              path: 'voucher',
+              children: [
+                { element: <Navigate to="/dashboard/discount/voucher/list" replace />, index: true },
+                {
+                  path: 'list', element: (
+                    <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
+                      <VoucherList />
+                    </RoleBasedGuard>
+                  )
+                },
+                {
+                  path: ':id/edit', element: (
 
-        //             <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
-        //               <VoucherCreateEdit />
-        //             </RoleBasedGuard>
-        //           )
-        //         },
-        //         {
-        //           path: 'new', element: (
+                    <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
+                      <VoucherCreateEdit />
+                    </RoleBasedGuard>
+                  )
+                },
+                {
+                  path: 'new', element: (
 
-        //             <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
-        //               <VoucherCreateEdit />
-        //             </RoleBasedGuard>
-        //           )
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
+                    <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
+                      <VoucherCreateEdit />
+                    </RoleBasedGuard>
+                  )
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
 
@@ -249,8 +248,8 @@ export default function Router() {
 }
 
 // VOUCHER
-// const VoucherList = Loadable(lazy(() => import('../pages/dashboard/voucher/list/VoucherList')))
-// const VoucherCreateEdit = Loadable(lazy(() => import('../pages/dashboard/voucher/new-edit/VoucherNewEdit')))
+const VoucherList = Loadable(lazy(() => import('../pages/dashboard/voucher/list/VoucherList')))
+const VoucherCreateEdit = Loadable(lazy(() => import('../pages/dashboard/voucher/new-edit/VoucherNewEdit')))
 // CUSTOMER
 // const CustomerList = Loadable(lazy(() => import('../pages/dashboard/customer/list/CustomerList')))
 // const CustomerNewEdit = Loadable(lazy(() => import('../pages/dashboard/customer/new-edit/CustomerNewEdit')))

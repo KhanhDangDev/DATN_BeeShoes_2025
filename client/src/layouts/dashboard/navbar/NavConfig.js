@@ -77,18 +77,18 @@ const navConfig = [
       //     // { title: 'account', path: PATH_DASHBOARD.user.account },
       //   ],
       // },
-      // {
-      //   title: 'Khuyến mại',
-      //   path: PATH_DASHBOARD.discount.root,
-      //   icon: ICONS.discount,
-      //   role: [ROLE_ADMIN],
-      //   children: [
-      //     // { title: 'posts', path: PATH_DASHBOARD.blog.posts },
-      //     // { title: 'post', path: PATH_DASHBOARD.blog.demoView },
-      //     { title: 'Mã Giảm Giá', path: PATH_DASHBOARD.discount.voucher.list, root: PATH_DASHBOARD.discount.voucher.root, role: [ROLE_ADMIN] },
-      //     // { title: 'Đợt Giảm Giá', path: PATH_DASHBOARD.discount.promotion.list },
-      //   ],
-      // },
+      {
+        title: 'Khuyến mại',
+        path: PATH_DASHBOARD.discount.root,
+        icon: ICONS.discount,
+        role: [ROLE_ADMIN],
+        children: [
+          // { title: 'posts', path: PATH_DASHBOARD.blog.posts },
+          // { title: 'post', path: PATH_DASHBOARD.blog.demoView },
+          { title: 'Mã Giảm Giá', path: PATH_DASHBOARD.discount.voucher.list, root: PATH_DASHBOARD.discount.voucher.root, role: [ROLE_ADMIN] },
+          // { title: 'Đợt Giảm Giá', path: PATH_DASHBOARD.discount.promotion.list },
+        ],
+      },
     ],
   },
 
