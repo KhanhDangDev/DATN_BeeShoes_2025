@@ -31,12 +31,7 @@ class ProductDetails extends BaseModel
         $productActiveStatus = ProductStatus::IS_ACTIVE;
 
         $query = "
-            WITH PRODUCT_DEFAULT_IMAGE AS (
-              SELECT PRODUCT_ID, PATH_URL, PRODUCT_COLOR_ID
-              FROM IMAGES
-              WHERE IS_DEFAULT = 1
-            )
-            SELECT PD.sku, P.name, PD.price, P.created_at, P.status, C.name as colorName, PDI.path_url
+            SELECT PD.sku, P.name, PD.price, P.created_at, P.status, C.name as colorName, I.PATH_URL
             FROM PRODUCT_DETAILS PD
             JOIN PRODUCTS P ON PD.PRODUCT_ID = P.ID
             JOIN COLORS C ON PD.COLOR_ID = C.ID
@@ -44,9 +39,9 @@ class ProductDetails extends BaseModel
             JOIN BRANDS B ON P.BRAND_ID = B.ID
             JOIN PRODUCT_CATEGORIES PC ON P.ID = PC.PRODUCT_ID
             JOIN CATEGORIES CG on PC.CATEGORY_ID = CG.ID
-            JOIN PRODUCT_DEFAULT_IMAGE PDI ON PD.PRODUCT_ID = PDI.PRODUCT_ID
-            AND PD.COLOR_ID = PDI.PRODUCT_COLOR_ID
-            WHERE P.status = '$productActiveStatus'
+            JOIN IMAGES I ON P.ID = I.product_id AND I.is_default = true
+            WHERE I.is_default = true
+            and P.status = '$productActiveStatus'
         ";
 
         if ($gender === 'male') {
@@ -101,7 +96,7 @@ class ProductDetails extends BaseModel
         }
 
         $query .= "
-        GROUP BY PD.SKU, P.NAME, PD.PRICE, P.CREATED_AT, P.STATUS, PDI.PATH_URL, C.NAME
+        GROUP BY PD.SKU, P.NAME, PD.PRICE, P.CREATED_AT, P.STATUS, I.PATH_URL, C.NAME
         ";
 
         $query .= "
@@ -140,19 +135,14 @@ class ProductDetails extends BaseModel
         $productActiveStatus = ProductStatus::IS_ACTIVE;
 
         $query = "
-            WITH PRODUCT_DEFAULT_IMAGE AS (
-              SELECT PRODUCT_ID, path_url, PRODUCT_COLOR_ID
-              FROM IMAGES
-              WHERE IS_DEFAULT = 1
-            )
-            SELECT PD.id, PD.sku, P.name, PD.price, C.name as colorName, PDI.path_url as pathUrl, S.name as sizeName, PD.quantity as stock
+            SELECT PD.id, PD.sku, P.name, PD.price, C.name as colorName, I.path_url as pathUrl, S.name as sizeName, PD.quantity as stock
             FROM PRODUCT_DETAILS PD
             JOIN PRODUCTS P ON PD.PRODUCT_ID = P.ID
             JOIN COLORS C ON PD.COLOR_ID = C.ID
             JOIN SIZES S ON PD.SIZE_ID = S.ID
-            JOIN PRODUCT_DEFAULT_IMAGE PDI ON PD.PRODUCT_ID = PDI.PRODUCT_ID
-            AND PD.COLOR_ID = PDI.PRODUCT_COLOR_ID
-            WHERE P.STATUS = '$productActiveStatus'
+            JOIN IMAGES I ON P.ID = I.product_id AND I.is_default = true
+            WHERE I.is_default = true
+            AND P.STATUS = '$productActiveStatus'
             AND PD.STATUS = '$productActiveStatus'
             AND PD.ID = '$id'
         ";
@@ -174,19 +164,14 @@ class ProductDetails extends BaseModel
         $productActiveStatus = ProductStatus::IS_ACTIVE;
 
         $query = "
-            WITH PRODUCT_DEFAULT_IMAGE AS (
-              SELECT PRODUCT_ID, path_url, PRODUCT_COLOR_ID
-              FROM IMAGES
-              WHERE IS_DEFAULT = 1
-            )
-            SELECT PD.id, PD.sku, P.name, PD.price, C.name as colorName, PDI.path_url as pathUrl, S.name as sizeName, PD.quantity as stock
+            SELECT PD.id, PD.sku, P.name, PD.price, C.name as colorName, I.path_url as pathUrl, S.name as sizeName, PD.quantity as stock
             FROM PRODUCT_DETAILS PD
             JOIN PRODUCTS P ON PD.PRODUCT_ID = P.ID
             JOIN COLORS C ON PD.COLOR_ID = C.ID
             JOIN SIZES S ON PD.SIZE_ID = S.ID
-            JOIN PRODUCT_DEFAULT_IMAGE PDI ON PD.PRODUCT_ID = PDI.PRODUCT_ID
-            AND PD.COLOR_ID = PDI.PRODUCT_COLOR_ID
-            WHERE P.STATUS = '$productActiveStatus'
+            JOIN IMAGES I ON P.ID = I.product_id AND I.is_default = true
+            WHERE I.is_default = true
+            AND P.STATUS = '$productActiveStatus'
             AND PD.STATUS = '$productActiveStatus'
             AND PD.ID IN ($idsConverted)
         ";
@@ -212,23 +197,18 @@ class ProductDetails extends BaseModel
         $productActiveStatus = ProductStatus::IS_ACTIVE;
 
         $query = "
-            WITH PRODUCT_DEFAULT_IMAGE AS (
-              SELECT PRODUCT_ID, path_url, PRODUCT_COLOR_ID
-              FROM IMAGES
-              WHERE IS_DEFAULT = 1
-            )
-            SELECT PD.sku, P.name, PD.price, C.name as colorName, PDI.path_url as pathUrl, SUM(BD.quantity) as totalSold
+            SELECT PD.sku, P.name, PD.price, C.name as colorName, I.path_url as pathUrl, SUM(BD.quantity) as totalSold
             FROM BILL_DETAILS BD
             JOIN BILLS B ON BD.BILL_ID = B.ID
 			JOIN PRODUCT_DETAILS PD ON PD.ID = BD.PRODUCT_DETAILS_ID
             JOIN PRODUCTS P ON PD.PRODUCT_ID = P.ID
             JOIN COLORS C ON PD.COLOR_ID = C.ID
-            JOIN PRODUCT_DEFAULT_IMAGE PDI ON PD.PRODUCT_ID = PDI.PRODUCT_ID
-            AND PD.COLOR_ID = PDI.PRODUCT_COLOR_ID
-            WHERE P.STATUS = '$productActiveStatus'
+            JOIN IMAGES I ON PD.ID = I.product_id AND I.is_default = true
+			WHERE I.is_default = true
+            and P.STATUS = '$productActiveStatus'
             AND PD.STATUS = '$productActiveStatus'
             AND B.STATUS = 'completed'
-            GROUP BY PD.SKU, P.NAME, PD.PRICE, C.NAME, PDI.PATH_URL
+            GROUP BY PD.SKU, P.NAME, PD.PRICE, C.NAME, I.PATH_URL
 			ORDER BY SUM(BD.quantity) DESC
             LIMIT 8
         ";
@@ -244,20 +224,15 @@ class ProductDetails extends BaseModel
         $productActiveStatus = ProductStatus::IS_ACTIVE;
 
         $query = "
-            WITH PRODUCT_DEFAULT_IMAGE AS (
-              SELECT PRODUCT_ID, path_url, PRODUCT_COLOR_ID
-              FROM IMAGES
-              WHERE IS_DEFAULT = 1
-            )
-            SELECT PD.sku, P.name, PD.price, C.name as colorName, PDI.path_url as pathUrl, P.created_at as createdAt
+            SELECT PD.sku, P.name, PD.price, C.name as colorName, I.path_url as pathUrl, P.created_at as createdAt
             FROM PRODUCT_DETAILS PD
             JOIN PRODUCTS P ON PD.PRODUCT_ID = P.ID
             JOIN COLORS C ON PD.COLOR_ID = C.ID
-            JOIN PRODUCT_DEFAULT_IMAGE PDI ON PD.PRODUCT_ID = PDI.PRODUCT_ID
-            AND PD.COLOR_ID = PDI.PRODUCT_COLOR_ID
-            WHERE P.STATUS = '$productActiveStatus'
+            JOIN IMAGES I ON P.ID = I.product_id AND I.is_default = true
+			WHERE I.is_default = true
+            AND P.STATUS = '$productActiveStatus'
             AND PD.STATUS = '$productActiveStatus'
-            GROUP BY PD.SKU, P.NAME, PD.PRICE, C.NAME, PDI.PATH_URL, P.CREATED_AT
+            GROUP BY PD.SKU, P.NAME, PD.PRICE, C.NAME, I.PATH_URL, P.CREATED_AT
             ORDER BY P.CREATED_AT DESC
             LIMIT 8
         ";

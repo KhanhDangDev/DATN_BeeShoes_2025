@@ -125,15 +125,6 @@
         <tr>
         <td align="center" valign="top" width="600">
         <![endif]-->
-                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
-                    <tr>
-                        <td align="center" valign="top" style="padding: 30px 24px;">
-                            <a href="/" target="_blank" style="display: inline-block;">
-                                <img src="https://res.cloudinary.com/dgupbx2im/image/upload/v1721838403/products/ltxmvpgst73yvw1ikgfz.png" border="0" width="200px" style="display: block; width: 200px; max-width: 200px; min-width: 200px;">
-                            </a>
-                        </td>
-                    </tr>
-                </table>
                 <!--[if (gte mso 9)|(IE)]>
         </td>
         </tr>
@@ -182,7 +173,7 @@
                         <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
                             <p style="margin-bottom: 15px;">Xin chào, </p>
                             Vui lòng xác nhận rằng
-                            địa chỉ email này là của bạn bằng cách nhấp vào nút bên dưới hoặc sử dụng liên kết này trong vòng 48 giờ.
+                            địa chỉ email này là của bạn bằng cách nhấp vào nút bên dưới hoặc sử dụng liên kết này.
                             </p>
                         </td>
                     </tr>

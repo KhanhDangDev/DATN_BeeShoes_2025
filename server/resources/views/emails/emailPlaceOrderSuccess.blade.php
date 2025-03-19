@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Thông báo đặt hàng thành công từ ĐKN Shop</title>
+    <title>Thông báo đặt hàng thành công từ BeeShoes Shop</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -92,7 +92,7 @@
                                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:300px">
                                     <tr>
                                         <td align="center" valign="top" style="font-size: 36px; font-weight: 800; line-height: 48px" class="mobile-center">
-                                            <img src="https://res.cloudinary.com/dgupbx2im/image/upload/v1721838403/products/ltxmvpgst73yvw1ikgfz.png" alt="" width="150">
+                                            <!-- <img src="https://res.cloudinary.com/dgupbx2im/image/upload/v1721838403/products/ltxmvpgst73yvw1ikgfz.png" alt="" width="150"> -->
                                         </td>
                                     </tr>
                                 </table>
@@ -114,7 +114,7 @@
                                         <p style="font-size: 16px; font-weight: 400; line-height: 24px">
                                             Xin chào <span style="font-weight: bold">{{$bill->full_name}}</span> ,
 
-                                            ĐKN xin thông báo đã nhận được đơn đặt hàng mang mã số
+                                            BeeShoes xin thông báo đã nhận được đơn đặt hàng mang mã số
                                             <span style="color: #ff6700; font-weight: bold; text-decoration: underline">{{'#' . $bill->code}}</span>
                                             của bạn.
 
@@ -122,7 +122,7 @@
 
                                             Dưới đây là thông tin đơn hàng của bạn. Để theo dõi trạng thái cũng như xem
                                             chi tiết đơn
-                                            hàng của mình tại ĐKN Shop, bạn có thể nhấn
+                                            hàng của mình tại BeeShoes Shop, bạn có thể nhấn
                                             <a href="{{ env('REACT_PATH_TRACKING_ORDER') . '?token=' . $token }}" style="font-weight: bold; color: #ff6700">vào đây</a>.
                                         </p>
                                     </td>
@@ -236,7 +236,7 @@
                                                     <span style="font-size: 13.5px; color: gray; display: block; margin-top: 10px">Đây
                                                         là email được gửi tự động, vui lòng không phản hồi email này. Để
                                                         tìm hiểu thêm các quy định về đơn hàng hay các chính sách sau
-                                                        bán hàng của ĐKN, vui lòng truy cập tại link hoặc gọi đến 096
+                                                        bán hàng của BeeShoes, vui lòng truy cập tại link hoặc gọi đến 096
                                                         3429749 (trong giờ hành chính) để được hướng dẫn.</span>
                                                 </td>
                                 </tr>

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Constants\AddressDefault;
 use App\Constants\CommonStatus;
 use App\Constants\ConstantSystem;
 use App\Constants\Role as ConstantsRole;
@@ -14,12 +13,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Account\AccountRequestBody;
 use App\Http\Resources\Accounts\AccountResource;
-use App\Http\Resources\Accounts\AddressResource;
 use App\Jobs\SendEmailCreateCustomer;
 use App\Jobs\SendEmailVerification;
 use App\Mail\VerifyEmail;
 use App\Models\Account;
-use App\Models\Address;
 use App\Models\Cart;
 use App\Models\CartDetails;
 use App\Models\Notification;
@@ -268,7 +265,6 @@ class AuthController extends Controller
         $response = Auth::user();
         $cartItemsByCart = CartDetails::getCartItemsByAccount(Auth::user()->id);
         $response['cartItems'] = $cartItemsByCart;
-        $response['addressDefault'] = $this->getAddressDefault();
         return ApiResponse::responseObject(new AccountResource($response));
     }
 
@@ -278,139 +274,6 @@ class AuthController extends Controller
         $role = Role::find(Auth::user()->role_id)->code;
         $response['role'] = $role;
         return ApiResponse::responseObject(new AccountResource($response));
-    }
-
-    public function getAddressDefault()
-    {
-        $addressDefault = Address::where("account_id", Auth::user()->id)->where("is_default", AddressDefault::IS_DEFAULT)->first();
-
-        if (!$addressDefault) {
-            return [];
-        }
-
-        return new AddressResource($addressDefault);
-    }
-
-    public function destroyAddress($id)
-    {
-        $address = Address::find($id);
-
-        if (!$address) {
-            throw new NotFoundException("Không tìm thấy địa chỉ");
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $address->delete();
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new RestApiException($e->getMessage());
-        }
-
-        return ApiResponse::responseObject($this->getListAddress());
-    }
-
-    public function updateIsDefaultAddress(Request $req)
-    {
-        $address = Address::find($req->id);
-
-        if (!$address) {
-            throw new NotFoundException("Không tìm thấy địa chỉ");
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $addressDefault = Address::where('account_id', '=', Auth::user()->id)
-                ->where('is_default', '=', AddressDefault::IS_DEFAULT)
-                ->first();
-
-            if ($addressDefault) {
-                $addressDefault['is_default'] = AddressDefault::UN_DEFAULT;
-                $addressDefault->save();
-            }
-
-            $address['is_default'] = AddressDefault::IS_DEFAULT;
-            $address->save();
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new RestApiException($e->getMessage());
-        }
-
-        return ApiResponse::responseObject($this->getListAddress());
-    }
-
-    public function createAddress(Request $req)
-    {
-        $user = Auth::user();
-
-        try {
-            DB::beginTransaction();
-
-            $newAddress = new Address();
-            $newAddress->full_name = $req->fullName;
-            $newAddress->address = $req->address;
-            $newAddress->phone_number = $req->phoneNumber;
-            $newAddress->province_id = $req->provinceId;
-            $newAddress->district_id = $req->districtId;
-            $newAddress->ward_code = $req->wardCode;
-            $newAddress->is_default = false;
-            $newAddress->account_id = $user->id;
-            $newAddress->save();
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new RestApiException($e->getMessage());
-        }
-
-        return ApiResponse::responseObject($this->getListAddress());
-    }
-
-    public function updateAddress(Request $req)
-    {
-        $address = Address::find($req->id);
-
-        if (!$address) {
-            throw new NotFoundException("Không tìm thấy địa chỉ");
-        }
-
-        try {
-            DB::beginTransaction();
-
-            $address->full_name = $req->fullName;
-            $address->address = $req->address;
-            $address->phone_number = $req->phoneNumber;
-            $address->province_id = $req->provinceId;
-            $address->district_id = $req->districtId;
-            $address->ward_code = $req->wardCode;
-            $address->save();
-
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new RestApiException($e->getMessage());
-        }
-
-        return ApiResponse::responseObject($this->getListAddress());
-    }
-
-    public function showListAddress()
-    {
-        return ApiResponse::responseObject($this->getListAddress());
-    }
-
-    public function getListAddress()
-    {
-
-        $addresses = Address::where("account_id", Auth::user()->id)->orderBy('created_at', 'desc')->get();
-
-        return AddressResource::collection($addresses);
     }
 
     public function updateAccount(Request $request)
@@ -531,13 +394,12 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             $isRemoveCartLocalStrorageBrowser = false;
-            throw new RestApiException("Có lỗi xảy ra");
+            throw new RestApiException($e->getMessage());
         }
 
         $response['accessToken'] = $token;
         $response['user'] = auth()->user();
         $response['user']['cartItems'] = $cartItemsByCart;
-        $response['user']['addressDefault'] = $this->getAddressDefault();
         $response['isRemoveCartBrowser'] = $isRemoveCartLocalStrorageBrowser;
 
         return ApiResponse::responseObject($response);
