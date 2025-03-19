@@ -53,7 +53,6 @@ const TABLE_HEAD = [
   { id: 'email', label: 'Email', align: 'left' },
   { id: 'phoneNumber', label: 'Số điện thoại', align: 'left' },
   { id: 'gender', label: 'Giới tính', align: 'left' },
-  { id: 'status', label: 'Trạng Thái', align: 'left' },
   { id: 'action', label: '', align: 'left' },
 ];
 

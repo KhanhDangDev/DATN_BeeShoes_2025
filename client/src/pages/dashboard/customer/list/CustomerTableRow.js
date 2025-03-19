@@ -67,20 +67,6 @@ export default function CustomerTableRow({ row, onEditRow }) {
       </TableCell>
 
       <TableCell align="left">
-        <Label
-          variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
-          color={
-            (status === AccountStatusTab.en.IS_ACTIVE && 'success') ||
-            (status === AccountStatusTab.en.UN_ACTIVE && 'error') ||
-            'default'
-          }
-          sx={{ textTransform: 'capitalize' }}
-        >
-          {status === AccountStatusTab.en.IS_ACTIVE ? "Đã có tài khoản" : "Chưa có tài khoản"}
-        </Label>
-      </TableCell>
-
-      <TableCell align="left">
         <Tooltip title='Cập nhật'>
           <IconButton onClick={onEditRow}>
             <Iconify
