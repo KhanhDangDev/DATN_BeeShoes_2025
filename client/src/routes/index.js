@@ -69,14 +69,14 @@ export default function Router() {
             </RoleBasedGuard>
           )
         },
-        // {
-        //   path: 'bill',
-        //   children: [
-        //     { element: <Navigate to="/dashboard/bill/list" replace />, index: true },
-        //     { path: 'list', element: <BillList /> },
-        //     { path: ':id/edit', element: <BillDetails /> },
-        //   ],
-        // },
+        {
+          path: 'bill',
+          children: [
+            { element: <Navigate to="/dashboard/bill/list" replace />, index: true },
+            { path: 'list', element: <BillList /> },
+            { path: ':id/edit', element: <BillDetails /> },
+          ],
+        },
 
         {
           path: 'product',
@@ -265,8 +265,8 @@ const CategoryList = Loadable(lazy(() => import('../pages/dashboard/attributes/c
 const BrandList = Loadable(lazy(() => import('../pages/dashboard/attributes/brand/list/BrandList')))
 const SizeList = Loadable(lazy(() => import('../pages/dashboard/attributes/size/list/SizeList')))
 // BILL
-// const BillList = Loadable(lazy(() => import('../pages/dashboard/order/list/BillList')))
-// const BillDetails = Loadable(lazy(() => import('../pages/dashboard/order/details/BillDetails')))
+const BillList = Loadable(lazy(() => import('../pages/dashboard/order/list/BillList')))
+const BillDetails = Loadable(lazy(() => import('../pages/dashboard/order/details/BillDetails')))
 
 // AUTHENTICATION
 const Login = Loadable(lazy(() => import('../pages/auth/Login')));
