@@ -138,49 +138,49 @@ export default function Router() {
         },
 
 
-        // {
-        //   path: 'account',
-        //   children: [
-        //     {
-        //       path: 'customer',
-        //       children: [
-        //         { element: <Navigate to="/dashboard/account/customer/list" replace />, index: true },
-        //         { path: 'list', element: <CustomerList /> },
-        //         { path: ':id', element: <CustomerNewEdit /> },
-        //         { path: ':id/edit', element: <CustomerNewEdit /> },
-        //       ]
-        //     },
-        //     {
-        //       path: 'employee',
-        //       children: [
-        //         { element: <Navigate to="/dashboard/account/employee/list" replace />, index: true },
-        //         {
-        //           path: 'list', element: (
-        //             <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
-        //               <EmployeeList />
-        //             </RoleBasedGuard>
-        //           )
-        //         },
-        //         {
-        //           path: ':id', element: (
+        {
+          path: 'account',
+          children: [
+            {
+              path: 'customer',
+              children: [
+                { element: <Navigate to="/dashboard/account/customer/list" replace />, index: true },
+                { path: 'list', element: <CustomerList /> },
+                { path: ':id', element: <CustomerNewEdit /> },
+                { path: ':id/edit', element: <CustomerNewEdit /> },
+              ]
+            },
+            {
+              path: 'employee',
+              children: [
+                { element: <Navigate to="/dashboard/account/employee/list" replace />, index: true },
+                {
+                  path: 'list', element: (
+                    <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
+                      <EmployeeList />
+                    </RoleBasedGuard>
+                  )
+                },
+                {
+                  path: ':id', element: (
 
-        //             <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
-        //               <EmployeeNewEdit />
-        //             </RoleBasedGuard>
-        //           )
-        //         },
-        //         {
-        //           path: ':id/edit', element: (
+                    <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
+                      <EmployeeNewEdit />
+                    </RoleBasedGuard>
+                  )
+                },
+                {
+                  path: ':id/edit', element: (
 
-        //             <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
-        //               <EmployeeNewEdit />
-        //             </RoleBasedGuard>
-        //           )
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
+                    <RoleBasedGuard accessibleRoles={[ROLE_ADMIN]}>
+                      <EmployeeNewEdit />
+                    </RoleBasedGuard>
+                  )
+                },
+              ],
+            },
+          ],
+        },
 
         {
           path: 'discount',
@@ -251,11 +251,11 @@ export default function Router() {
 const VoucherList = Loadable(lazy(() => import('../pages/dashboard/voucher/list/VoucherList')))
 const VoucherCreateEdit = Loadable(lazy(() => import('../pages/dashboard/voucher/new-edit/VoucherNewEdit')))
 // CUSTOMER
-// const CustomerList = Loadable(lazy(() => import('../pages/dashboard/customer/list/CustomerList')))
-// const CustomerNewEdit = Loadable(lazy(() => import('../pages/dashboard/customer/new-edit/CustomerNewEdit')))
+const CustomerList = Loadable(lazy(() => import('../pages/dashboard/customer/list/CustomerList')))
+const CustomerNewEdit = Loadable(lazy(() => import('../pages/dashboard/customer/new-edit/CustomerNewEdit')))
 // Employee
-// const EmployeeList = Loadable(lazy(() => import('../pages/dashboard/employee/list/EmployeeList')))
-// const EmployeeNewEdit = Loadable(lazy(() => import('../pages/dashboard/employee/new-edit/EmployeeNewEdit')))
+const EmployeeList = Loadable(lazy(() => import('../pages/dashboard/employee/list/EmployeeList')))
+const EmployeeNewEdit = Loadable(lazy(() => import('../pages/dashboard/employee/new-edit/EmployeeNewEdit')))
 // PRODUCT
 const ProductList = Loadable(lazy(() => import('../pages/dashboard/product/list/ProductList')))
 const ProductCreateEdit = Loadable(lazy(() => import('../pages/dashboard/product/new-edit/ProductNewEdit')))
