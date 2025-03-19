@@ -22,32 +22,6 @@ ProductTableRow.propTypes = {
   onUpdateRow: PropTypes.func,
 };
 
-const BorderLinearProgress = ({ value }) => {
-  const theme = useTheme();
-
-  const normalizedValue = Math.min(Math.max(0, value), 100);
-
-  return (
-    <LinearProgress
-      variant="determinate"
-      value={normalizedValue}
-      sx={{
-        height: 6.5,
-        width: 90,
-        borderRadius: 5,
-        [`&.${linearProgressClasses.colorPrimary}`]: {
-          backgroundColor: normalizedValue > 0 ? theme.palette.grey[200] : theme.palette.error.light,
-        },
-        [`& .${linearProgressClasses.bar}`]: {
-          borderRadius: 5,
-          backgroundColor: normalizedValue >= 10 ? '#22C55E' : '#FFAB00',
-        },
-      }}
-    />
-  );
-};
-
-
 export default function ProductTableRow({ row, onEditRow, onUpdateRow }) {
   const theme = useTheme();
   const {user} = useAuth();
@@ -108,17 +82,6 @@ export default function ProductTableRow({ row, onEditRow, onUpdateRow }) {
         <Stack>
           <Typography variant="body2" noWrap>
             {brand}
-          </Typography>
-        </Stack>
-      </TableCell>
-
-      <TableCell align="left">
-        <Stack>
-          <Typography variant="body2" noWrap>
-            <BorderLinearProgress variant="determinate" value={totalQuantity} />
-          </Typography>
-          <Typography noWrap variant="body2" sx={{ color: '#696969	', fontSize: '12px', marginTop: 1 }}>
-            {`${totalQuantity} (${stockStatus})`}
           </Typography>
         </Stack>
       </TableCell>

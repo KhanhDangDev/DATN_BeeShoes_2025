@@ -45,45 +45,7 @@ export default function ProductTableToolbar({
 
   return (
     <Stack spacing={2} direction={{ xs: 'column', md: 'row' }} sx={{ py: 2.5, px: 2 }}>
-      <FormControl sx={{ m: MIN_FORM_CONTROL_WIDTH, width: FORM_CONTROL_WIDTH }}>
-        <InputLabel>Tình trạng</InputLabel>
-        <Select
-          multiple
-          value={filterStock}
-          onChange={onFilterStock}
-          input={<OutlinedInput label="Tình trạng" />}
-          IconComponent={(props) => {
-            if (props.className.includes('MuiSelect-iconOpen')) {
-              return <IconArrowUp />;
-            }
-            return <IconArrowDown />;
-          }}
-          renderValue={(selected) => selected.join(', ')}
-          sx={{
-            maxWidth: { md: INPUT_WIDTH },
-            textTransform: 'capitalize',
-          }}
-        >
-          {optionsStock.map((s) => (
-            <MenuItem
-              key={s}
-              value={s}
-              sx={{
-                mx: 1,
-                my: 0.5,
-                borderRadius: 0.75,
-                typography: 'body2',
-                textTransform: 'capitalize',
-                padding: 0,
-              }}
-            >
-              <Checkbox size='small' checked={filterStock.indexOf(s) > -1} />
-              {s}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
+     
       <FormControl sx={{ m: MIN_FORM_CONTROL_WIDTH, width: FORM_CONTROL_WIDTH }}>
         <InputLabel>Danh mục</InputLabel>
         <Select

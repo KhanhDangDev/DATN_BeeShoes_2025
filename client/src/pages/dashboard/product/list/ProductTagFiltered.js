@@ -98,25 +98,6 @@ export default function ProductTagFiltered({
           </WrapperStyle>
         )}
 
-        {stocks.length > 0 && (
-          <WrapperStyle>
-            <LabelStyle>Số lượng tồn:</LabelStyle>
-            <Stack direction="row" flexWrap="wrap" sx={{ p: 0.75 }}>
-              {stocks.map((s) => (
-                <Chip
-                  key={s}
-                  color='primary'
-                  deleteIcon={'ic:round-clear-all'}
-                  label={s}
-                  size="small"
-                  onDelete={() => onRemoveStock(s)}
-                  sx={{ m: 0.5 }}
-                />
-              ))}
-            </Stack>
-          </WrapperStyle>
-        )}
-
         {categories.length > 0 && (
           <WrapperStyle>
             <LabelStyle>Danh mục:</LabelStyle>

@@ -59,7 +59,6 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Tên sản phẩm', align: 'left' },
   { id: 'createdAt', label: 'Ngày tạo', align: 'left' },
   { id: 'brand', label: 'Thương hiệu', align: 'left' },
-  { id: 'totalQuantity', label: 'Số lượng tồn', align: 'left' },
   { id: 'status', label: 'Trạng thái', align: 'left' },
   { id: 'action', label: '', align: 'left' },
 ];
